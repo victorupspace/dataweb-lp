@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(ffprobe -v quiet -print_format json -show_streams /Users/Victor/Documents/dataweb-site/public/assets/herovideo.mp4)",
+      "Bash(ffmpeg -i /Users/Victor/Documents/dataweb-site/public/assets/herovideo.mp4)",
+      "Bash(mdls -name kMDItemCodecs /Users/Victor/Documents/dataweb-site/public/assets/herovideo.mp4)",
+      "WebFetch(domain:codepen.io)"
+    ]
+  }
+}
