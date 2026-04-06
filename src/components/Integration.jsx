@@ -1,65 +1,74 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import '../styles/Integration.css'
 
+gsap.registerPlugin(ScrollTrigger)
+
 /* ─────────────────────────────────────────────────────────
-   Mock data — substitua imageSrc por caminhos reais
+   Slides
 ───────────────────────────────────────────────────────── */
 const SLIDES = [
   {
     id: 1,
-    title: 'Dashboard Centralizado',
-    subtitle: 'Acompanhe vendas, ticket médio e metas da equipe em painéis interativos atualizados em tempo real.',
+    title: 'Eficiência que Transforma o Atendimento',
+    subtitle: 'Eleve o padrão da sua ótica unindo tecnologia de ponta com uma jornada de compra mais rápida e segura para seu cliente.',
     color: '#6C63FF',
-    label: 'Dashboard',
+    label: 'Atendimento personalizado',
+    icon: 'grid',
   },
   {
     id: 2,
-    title: 'Gestão de Pedidos',
-    subtitle: 'Controle todos os pedidos de laboratório com rastreamento automático e status em tempo real.',
+    title: 'Inteligência Artificial na Leitura de Receitas',
+    subtitle: 'Automatize a interpretação de dados com IA, eliminando erros de digitação e acelerando o atendimento inicial',
     color: '#00B4D8',
-    label: 'Pedidos',
+    label: 'IA',
+    icon: 'box',
   },
   {
     id: 3,
-    title: 'CRM de Clientes',
-    subtitle: 'Histórico completo de compras, exames e agendamentos de cada cliente, acessível com um clique.',
+    title: 'Orçamentos Ágeis e Assertivos',
+    subtitle: 'Crie propostas personalizadas em segundos com acesso direto ao guia de lentes e configurações da sua loja.',
     color: '#FBB040',
-    label: 'CRM',
+    label: 'Orçamentos',
+    icon: 'users',
   },
   {
     id: 4,
-    title: 'Controle de Estoque',
-    subtitle: 'Gerencie armações, lentes e acessórios com alertas de ruptura e sugestão automática de reposição.',
+    title: 'Gestão Estratégica de O.S',
+    subtitle: 'Mantenha o controle total do fluxo de trabalho com organização impecável e acompanhamento de status em tempo real.',
     color: '#A6CE39',
-    label: 'Estoque',
+    label: 'Ordens de Serviço',
+    icon: 'layers',
   },
   {
     id: 5,
-    title: 'Relatórios e BI',
-    subtitle: 'Gere relatórios gerenciais com filtros avançados e exporte para Excel ou PDF com um clique.',
+    title: 'Conexão Direta com Laboratórios',
+    subtitle: 'Otimize a logística enviando pedidos digitalmente para os principais laboratórios, sem necessidade de redigitação.',
     color: '#FF6B6B',
-    label: 'Relatórios',
+    label: 'Laboratórios',
+    icon: 'chart',
   },
   {
     id: 6,
-    title: 'Agenda e Consultas',
-    subtitle: 'Organize agendamentos de optometria, envie lembretes automáticos e reduza faltas em até 40%.',
+    title: 'Precisão com Pupilômetro Integrado',
+    subtitle: 'Centralize medições técnicas diretamente no sistema, garantindo que todas as informações do cliente fiquem em um só lugar.',
     color: '#FF9F43',
-    label: 'Agenda',
+    label: 'Pupilômetro',
+    icon: 'calendar',
   },
 ]
 
 const N = SLIDES.length
 
 /* ─────────────────────────────────────────────────────────
-   Posições do stack — GSAP vai interpolar entre elas
+   Stack positions
 ───────────────────────────────────────────────────────── */
 const STACK = {
   front:  { x: 0,  y: 0,  scale: 1,     opacity: 1,    zIndex: 10, rotateZ: 0 },
-  mid:    { x: 18, y: 15, scale: 0.957, opacity: 1,    zIndex: 5,  rotateZ: 0 },
-  back:   { x: 36, y: 30, scale: 0.913, opacity: 0.82, zIndex: 1,  rotateZ: 0 },
-  hidden: { x: 0,  y: 0,  scale: 0.87,  opacity: 0,    zIndex: 0,  rotateZ: 0 },
+  mid:    { x: 22, y: 18, scale: 0.953, opacity: 0.92,  zIndex: 5,  rotateZ: 0.5 },
+  back:   { x: 44, y: 36, scale: 0.905, opacity: 0.72,  zIndex: 1,  rotateZ: 1 },
+  hidden: { x: 0,  y: 0,  scale: 0.87,  opacity: 0,     zIndex: 0,  rotateZ: 0 },
 }
 
 function getRole(i, activeIdx) {
@@ -71,13 +80,63 @@ function getRole(i, activeIdx) {
 }
 
 /* ─────────────────────────────────────────────────────────
-   Placeholder — imita um dashboard real em light mode
+   Icons
+───────────────────────────────────────────────────────── */
+function Icon({ name, color }) {
+  const p = { width: 18, height: 18, fill: 'none', viewBox: '0 0 18 18' }
+  if (name === 'grid') return (
+    <svg {...p}>
+      <rect x="2" y="2" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.6" />
+      <rect x="10" y="2" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.6" />
+      <rect x="2" y="10" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.6" />
+      <rect x="10" y="10" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.6" />
+    </svg>
+  )
+  if (name === 'box') return (
+    <svg {...p}>
+      <path d="M3 5.5L9 2l6 3.5v7L9 16 3 12.5V5.5z" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
+      <path d="M9 2v14M3 5.5l6 3.5 6-3.5" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
+    </svg>
+  )
+  if (name === 'users') return (
+    <svg {...p}>
+      <circle cx="7" cy="6" r="3" stroke={color} strokeWidth="1.6" />
+      <path d="M1 16c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M12 3a3 3 0 010 6M14.5 11.5c1.5.8 2.5 2.2 2.5 4.5" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  )
+  if (name === 'layers') return (
+    <svg {...p}>
+      <path d="M9 2L16 6 9 10 2 6 9 2z" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
+      <path d="M2 10l7 4 7-4" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M2 14l7 4 7-4" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  )
+  if (name === 'chart') return (
+    <svg {...p}>
+      <rect x="2" y="10" width="3.5" height="6" rx="1" stroke={color} strokeWidth="1.6" />
+      <rect x="7.25" y="6" width="3.5" height="10" rx="1" stroke={color} strokeWidth="1.6" />
+      <rect x="12.5" y="2" width="3.5" height="14" rx="1" stroke={color} strokeWidth="1.6" />
+    </svg>
+  )
+  if (name === 'calendar') return (
+    <svg {...p}>
+      <rect x="2" y="4" width="14" height="12" rx="2" stroke={color} strokeWidth="1.6" />
+      <path d="M6 2v4M12 2v4M2 8h14" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+      <circle cx="6" cy="12" r="1.2" fill={color} />
+      <circle cx="9" cy="12" r="1.2" fill={color} />
+      <circle cx="12" cy="12" r="1.2" fill={color} />
+    </svg>
+  )
+  return null
+}
+
+/* ─────────────────────────────────────────────────────────
+   Dashboard Placeholder
 ───────────────────────────────────────────────────────── */
 function ScreenPlaceholder({ slide }) {
   return (
     <div className="itg-ph" style={{ '--sc': slide.color }}>
-
-      {/* Sidebar */}
       <aside className="itg-ph__sidebar">
         <div className="itg-ph__logo">
           <div className="itg-ph__logo-icon" />
@@ -85,40 +144,42 @@ function ScreenPlaceholder({ slide }) {
         </div>
         <nav className="itg-ph__nav">
           {[0, 1, 2, 3, 4].map(i => (
-            <div
-              key={i}
-              className={`itg-ph__nav-item${i === 0 ? ' itg-ph__nav-item--active' : ''}`}
-            >
+            <div key={i} className={`itg-ph__nav-item${i === 0 ? ' itg-ph__nav-item--active' : ''}`}>
               <div className="itg-ph__nav-icon" />
               <div className="itg-ph__nav-label" />
             </div>
           ))}
         </nav>
+        <div className="itg-ph__sidebar-footer">
+          <div className="itg-ph__avatar-sm" />
+          <div className="itg-ph__sidebar-user">
+            <div className="itg-ph__sidebar-name" />
+            <div className="itg-ph__sidebar-role" />
+          </div>
+        </div>
       </aside>
 
-      {/* Main */}
       <main className="itg-ph__main">
-
-        {/* Top bar */}
         <div className="itg-ph__topbar">
-          <div className="itg-ph__topbar-title" />
+          <div className="itg-ph__topbar-left">
+            <div className="itg-ph__topbar-title" />
+            <div className="itg-ph__breadcrumb" />
+          </div>
           <div className="itg-ph__topbar-right">
             <div className="itg-ph__search-bar" />
-            <div className="itg-ph__icon-btn" />
             <div className="itg-ph__icon-btn itg-ph__icon-btn--bell" />
             <div className="itg-ph__avatar" />
           </div>
         </div>
 
-        {/* KPI cards */}
         <div className="itg-ph__kpis">
           {[
-            { w: '48%' },
-            { w: '62%' },
-            { w: '38%' },
-            { w: '55%' },
+            { w: '52%', accent: true },
+            { w: '64%', accent: false },
+            { w: '40%', accent: false },
+            { w: '58%', accent: false },
           ].map((card, i) => (
-            <div key={i} className="itg-ph__kpi">
+            <div key={i} className={`itg-ph__kpi${card.accent ? ' itg-ph__kpi--accent' : ''}`}>
               <div className="itg-ph__kpi-top">
                 <div className="itg-ph__kpi-label" style={{ width: card.w }} />
                 <div className="itg-ph__kpi-badge" />
@@ -132,7 +193,6 @@ function ScreenPlaceholder({ slide }) {
           ))}
         </div>
 
-        {/* Chart area + tracking */}
         <div className="itg-ph__mid">
           <div className="itg-ph__chart-card">
             <div className="itg-ph__chart-header">
@@ -160,68 +220,125 @@ function ScreenPlaceholder({ slide }) {
               <div className="itg-ph__track-title" />
               <div className="itg-ph__track-menu" />
             </div>
-            <div className="itg-ph__map" />
-            <div className="itg-ph__track-info">
-              <div className="itg-ph__track-label" />
-              <div className="itg-ph__track-val" />
+            <div className="itg-ph__list">
+              {[70, 45, 85, 55].map((w, i) => (
+                <div key={i} className="itg-ph__list-row">
+                  <div className="itg-ph__list-dot" />
+                  <div className="itg-ph__list-bar" style={{ width: `${w}%` }} />
+                  <div className="itg-ph__list-val" />
+                </div>
+              ))}
             </div>
           </div>
         </div>
-
       </main>
     </div>
   )
 }
 
 /* ─────────────────────────────────────────────────────────
-   Componente principal
+   Main component
 ───────────────────────────────────────────────────────── */
 export default function Integration() {
-  const [active, setActive]         = useState(0)
-  const [displayIdx, setDisplayIdx] = useState(0)
+  const [active, setActive] = useState(0)
 
   const cardRefs      = useRef([])
-  const textRef       = useRef(null)
-  const progressRef   = useRef(null)
+  const tabRefs       = useRef([])
+  const tabFillRefs   = useRef([])
   const blob1Ref      = useRef(null)
   const blob2Ref      = useRef(null)
   const blob3Ref      = useRef(null)
   const activeRef     = useRef(0)
   const animating     = useRef(false)
   const progressTween = useRef(null)
+  const floatTween    = useRef(null)
   const fns           = useRef({ goTo: null, startProgress: null })
+  const sectionRef    = useRef(null)
+  const panelRef      = useRef(null)
+  const stackWrapRef  = useRef(null)
 
-  /* ── Blobs etéreos ── */
+  /* ── Blobs ── */
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.to(blob1Ref.current, {
-        x: 110, y: 70, scale: 1.25,
-        duration: 22, ease: 'sine.inOut',
-        repeat: -1, yoyo: true,
+      gsap.to(blob1Ref.current, { x: 120, y: 80, scale: 1.3, duration: 24, ease: 'sine.inOut', repeat: -1, yoyo: true })
+      gsap.to(blob2Ref.current, { x: -100, y: -80, scale: 0.8, duration: 30, ease: 'sine.inOut', repeat: -1, yoyo: true })
+      gsap.to(blob3Ref.current, { x: 60, y: -110, scale: 1.2, duration: 20, ease: 'sine.inOut', repeat: -1, yoyo: true })
+    })
+    return () => ctx.revert()
+  }, [])
+
+  /* ── ScrollTrigger entry ── */
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(tabRefs.current, {
+        x: -50, opacity: 0, duration: 0.7,
+        stagger: 0.09, ease: 'power3.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 68%',
+          once: true,
+        },
       })
-      gsap.to(blob2Ref.current, {
-        x: -90, y: -70, scale: 0.85,
-        duration: 28, ease: 'sine.inOut',
-        repeat: -1, yoyo: true,
-      })
-      gsap.to(blob3Ref.current, {
-        x: 50, y: -100, scale: 1.15,
-        duration: 19, ease: 'sine.inOut',
-        repeat: -1, yoyo: true,
+      gsap.from(stackWrapRef.current, {
+        x: 70, opacity: 0, duration: 0.95,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 68%',
+          once: true,
+        },
       })
     })
     return () => ctx.revert()
   }, [])
 
-  /* ── Carrossel ── */
+  /* ── Carousel ── */
   useEffect(() => {
+    function killFloat() {
+      floatTween.current?.kill()
+      // Reset all cards' float offset
+      cardRefs.current.forEach(el => el && gsap.set(el, { y: gsap.getProperty(el, 'y') }))
+    }
+
+    function startFloat(idx) {
+      killFloat()
+      const card = cardRefs.current[idx]
+      if (!card) return
+      const currentY = gsap.getProperty(card, 'y')
+      floatTween.current = gsap.to(card, {
+        y: Number(currentY) - 10,
+        duration: 2.8,
+        ease: 'sine.inOut',
+        repeat: -1,
+        yoyo: true,
+      })
+    }
+
+    function animateBars(idx) {
+      const card = cardRefs.current[idx]
+      if (!card) return
+      const bars = card.querySelectorAll('.itg-ph__bar')
+      gsap.fromTo(bars,
+        { scaleY: 0, transformOrigin: 'bottom center' },
+        { scaleY: 1, duration: 0.75, stagger: 0.04, ease: 'power2.out', delay: 0.2 }
+      )
+    }
+
     function startProgress() {
-      if (!progressRef.current) return
+      tabFillRefs.current.forEach((el, i) => {
+        if (!el) return
+        gsap.killTweensOf(el)
+        if (i !== activeRef.current) gsap.set(el, { scaleY: 0 })
+      })
+
+      const fill = tabFillRefs.current[activeRef.current]
+      if (!fill) return
+
       progressTween.current?.kill()
-      gsap.set(progressRef.current, { scaleX: 0, transformOrigin: 'left center' })
-      progressTween.current = gsap.to(progressRef.current, {
-        scaleX: 1,
-        duration: 3,
+      gsap.set(fill, { scaleY: 0, transformOrigin: 'top center' })
+      progressTween.current = gsap.to(fill, {
+        scaleY: 1,
+        duration: 4,
         ease: 'none',
         onComplete: () => fns.current.goTo?.((activeRef.current + 1) % N, 1),
       })
@@ -233,6 +350,7 @@ export default function Integration() {
       if (newIdx === oldIdx) return
       animating.current = true
       progressTween.current?.kill()
+      killFloat()
 
       const tl = gsap.timeline({
         onComplete() {
@@ -240,6 +358,8 @@ export default function Integration() {
           activeRef.current = newIdx
           setActive(newIdx)
           startProgress()
+          startFloat(newIdx)
+          animateBars(newIdx)
         },
       })
 
@@ -248,81 +368,62 @@ export default function Integration() {
         const oldRole = getRole(i, oldIdx)
         const newRole = getRole(i, newIdx)
 
-        /* Posiciona cards que entram na cena a partir do "escondido" */
         if (oldRole === 'hidden' && newRole !== 'hidden') {
           gsap.set(el, dir > 0
-            ? { ...STACK.hidden, x: 52, y: 44, zIndex: 0 }
-            : { ...STACK.hidden, x: -24, y: -24, zIndex: 0 }
+            ? { ...STACK.hidden, x: 66, y: 54, zIndex: 0 }
+            : { ...STACK.hidden, x: -28, y: -28, zIndex: 0 }
           )
         }
 
-        /* Card da frente sai com flair ao avançar */
         if (dir > 0 && oldRole === 'front' && newRole === 'hidden') {
           tl.to(el, {
-            x: -170, y: -50, scale: 0.85,
-            opacity: 0, rotateZ: -9,
-            duration: 0.55, ease: 'power3.inOut', zIndex: 0,
+            x: -190, y: -65, scale: 0.82,
+            opacity: 0, rotateZ: -11,
+            duration: 0.58, ease: 'power3.inOut', zIndex: 0,
           }, 0)
           return
         }
 
-        /* Card da frente vai para o meio ao voltar */
-        tl.to(el, {
-          ...STACK[newRole],
-          duration: 0.68,
-          ease: 'power3.inOut',
-        }, 0)
+        tl.to(el, { ...STACK[newRole], duration: 0.72, ease: 'power3.inOut' }, 0)
       })
 
-      /* Transição de texto */
-      const textEl = textRef.current
-      if (textEl) {
-        tl.to(textEl, { opacity: 0, y: -12, duration: 0.22, ease: 'power2.in' }, 0)
-        tl.call(() => setDisplayIdx(newIdx), null, 0.28)
-        tl.fromTo(textEl,
-          { opacity: 0, y: 12 },
-          { opacity: 1, y: 0, duration: 0.36, ease: 'power2.out' },
-          0.32
-        )
-      }
+
     }
 
     fns.current = { goTo, startProgress }
 
-    /* Posições iniciais */
     cardRefs.current.forEach((el, i) => {
       if (!el) return
       gsap.set(el, STACK[getRole(i, 0)])
     })
 
     startProgress()
-    return () => progressTween.current?.kill()
+    startFloat(0)
+    animateBars(0)
+
+    return () => {
+      progressTween.current?.kill()
+      floatTween.current?.kill()
+    }
   }, [])
 
-  function handleNav(dir) {
-    const newIdx = (activeRef.current + dir + N) % N
-    fns.current.goTo?.(newIdx, dir)
-  }
-
-  function handleDot(i) {
+  function handleTab(i) {
     const dir = i > activeRef.current ? 1 : -1
     fns.current.goTo?.(i, dir)
   }
 
-  const slide = SLIDES[displayIdx]
-
   return (
-    <section className="section section--light itg" id="plataforma">
+    <section className="section section--light itg" id="plataforma" ref={sectionRef}>
 
-      {/* Blobs de fundo */}
       <div className="itg__blobs" aria-hidden="true">
         <div ref={blob1Ref} className="itg__blob itg__blob--1" />
         <div ref={blob2Ref} className="itg__blob itg__blob--2" />
         <div ref={blob3Ref} className="itg__blob itg__blob--3" />
       </div>
 
-      <div className="container">
+      <div className="itg__grid-overlay" aria-hidden="true" />
 
+      <div className="container">
         <div className="section__header">
           <span className="section__tag">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -331,104 +432,87 @@ export default function Integration() {
             </svg>
             Plataforma Web
           </span>
-          <h2 className="section__title">Uma solução completa para sua ótica</h2>
+          <h2 className="section__title">Conheça o Optfacil</h2>
           <p className="section__subtitle">
-            Tudo que você precisa para gerenciar sua ótica em um único sistema, acessível de qualquer dispositivo.
+            A solução definitiva para a gestão avançada de ordens de serviço em óticas
           </p>
         </div>
 
-        {/* ── Showcase ── */}
-        <div className="itg__showcase">
+        <div className="itg__body">
 
-          <div className="itg__stack">
-            {/*
-              Spacer invisível — define a altura do container do stack.
-              Todos os cards reais são position:absolute em cima dele.
-            */}
-            <div className="itg__spacer" aria-hidden="true">
-              <div className="itg__chrome" />
-              <div className="itg__screen" />
-            </div>
-
-            {/* Os 6 cards — GSAP gerencia suas posições */}
+          {/* ── Left: feature tabs ── */}
+          <div className="itg__panel" ref={panelRef}>
             {SLIDES.map((s, i) => (
-              <div
+              <button
                 key={s.id}
-                className="itg__card"
-                ref={el => (cardRefs.current[i] = el)}
+                className={`itg__tab${i === active ? ' is-active' : ''}`}
+                style={{ '--tc': s.color }}
+                onClick={() => handleTab(i)}
+                ref={el => (tabRefs.current[i] = el)}
               >
-                <div className="itg__chrome">
-                  <div className="itg__chrome-dots">
-                    <span className="itg__dot--red" />
-                    <span className="itg__dot--yellow" />
-                    <span className="itg__dot--green" />
-                  </div>
-                  <div className="itg__chrome-bar">
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                      <circle cx="5" cy="5" r="4" stroke="currentColor" strokeWidth="1" opacity="0.4" />
-                      <path d="M1 5h8M5 1c-1 1.5-1.5 2.8-1.5 4s.5 2.5 1.5 4" stroke="currentColor" strokeWidth="1" opacity="0.4" strokeLinecap="round" />
-                    </svg>
-                    dataweb.com.br/{s.label.toLowerCase()}
-                  </div>
-                  <div className="itg__chrome-actions">
-                    <span /><span /><span />
-                  </div>
+                {/* Vertical progress fill */}
+                <div
+                  className="itg__tab-fill"
+                  ref={el => (tabFillRefs.current[i] = el)}
+                />
+
+                <div
+                  className="itg__tab-icon"
+                  style={{ background: i === active ? `${s.color}18` : 'rgba(0,0,0,0.04)' }}
+                >
+                  <Icon
+                    name={s.icon}
+                    color={i === active ? s.color : 'rgba(0,0,0,0.3)'}
+                  />
                 </div>
-                <div className="itg__screen">
-                  <ScreenPlaceholder slide={s} />
+
+                <div className="itg__tab-body">
+                  <span className="itg__tab-label">{s.label}</span>
+                  <p className="itg__tab-title">{s.title}</p>
+                  <p className="itg__tab-desc">{s.subtitle}</p>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
 
-          {/* Barra de progresso do auto-play */}
-          <div className="itg__progress-track">
-            <div
-              className="itg__progress-fill"
-              ref={progressRef}
-              style={{ background: slide.color }}
-            />
-          </div>
-
-          {/* Texto + controles */}
-          <div className="itg__info" ref={textRef}>
-            <div className="itg__info-text">
-              <h3 className="itg__title">{slide.title}</h3>
-              <p className="itg__subtitle">{slide.subtitle}</p>
-            </div>
-
-            <div className="itg__controls">
-              <button
-                className="itg__nav-btn"
-                onClick={() => handleNav(-1)}
-                aria-label="Anterior"
-              >
-                <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-                  <path d="M9.5 3L5 7.5l4.5 4.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-
-              <div className="itg__dots">
-                {SLIDES.map((_, i) => (
-                  <button
-                    key={i}
-                    className={`itg__dot${i === active ? ' is-active' : ''}`}
-                    onClick={() => handleDot(i)}
-                    aria-label={`Slide ${i + 1}`}
-                    style={i === active ? { background: SLIDES[active].color } : undefined}
-                  />
-                ))}
+          {/* ── Right: card stack ── */}
+          <div className="itg__stack-wrap" ref={stackWrapRef}>
+            <div className="itg__stack">
+              <div className="itg__spacer" aria-hidden="true">
+                <div className="itg__chrome" />
+                <div className="itg__screen" />
               </div>
 
-              <button
-                className="itg__nav-btn"
-                onClick={() => handleNav(1)}
-                aria-label="Próximo"
-              >
-                <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-                  <path d="M5.5 3L10 7.5 5.5 12" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
+              {SLIDES.map((s, i) => (
+                <div
+                  key={s.id}
+                  className="itg__card"
+                  ref={el => (cardRefs.current[i] = el)}
+                  style={{ '--cc': s.color }}
+                >
+                  <div className="itg__chrome">
+                    <div className="itg__chrome-dots">
+                      <span className="itg__dot--red" />
+                      <span className="itg__dot--yellow" />
+                      <span className="itg__dot--green" />
+                    </div>
+                    <div className="itg__chrome-bar">
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                        <circle cx="5" cy="5" r="4" stroke="currentColor" strokeWidth="1" opacity="0.4" />
+                        <path d="M1 5h8M5 1c-1 1.5-1.5 2.8-1.5 4s.5 2.5 1.5 4"
+                          stroke="currentColor" strokeWidth="1" opacity="0.4" strokeLinecap="round" />
+                      </svg>
+                      dataweb.com.br/{s.label.toLowerCase()}
+                    </div>
+                    <div className="itg__chrome-actions">
+                      <span /><span /><span />
+                    </div>
+                  </div>
+                  <div className="itg__screen">
+                    <ScreenPlaceholder slide={s} />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 

@@ -1,16 +1,28 @@
 /* ============================================================
-   INTEGRATION — Web SaaS Screenshot Showcase  (Light Mode)
+   INTEGRATION — Plataforma Web Showcase
    ============================================================ */
 
-/* ── Section override ─────────────────────────────────────── */
+/* ── Section ─────────────────────────────────────────────── */
 .section--light.itg {
-  background: #f8f9fc;
+  background: #f4f6fb;
   position: relative;
   overflow: hidden;
-  padding: 80px 0;       /* reduz o padding vertical da seção */
+  padding: 100px 0 120px;
 }
 
-/* ── Ethereal background blobs ────────────────────────────── */
+/* ── Dot grid overlay ─────────────────────────────────────── */
+.itg__grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 40%, transparent 100%);
+}
+
+/* ── Ethereal blobs ───────────────────────────────────────── */
 .itg__blobs {
   position: absolute;
   inset: 0;
@@ -21,83 +33,207 @@
 .itg__blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(90px);
   will-change: transform;
 }
 
 .itg__blob--1 {
-  width: 500px;
-  height: 500px;
-  top: -60px;
-  left: -80px;
-  background: #FBB040;
-  opacity: 0.32;
+  width: 600px; height: 600px;
+  top: -120px; left: -140px;
+  background: radial-gradient(circle at 40% 40%, #FBB040, #f5c518);
+  opacity: 0.22;
+  filter: blur(100px);
 }
 
 .itg__blob--2 {
-  width: 540px;
-  height: 540px;
-  bottom: -80px;
-  right: -100px;
-  background: #A6CE39;
-  opacity: 0.28;
+  width: 640px; height: 640px;
+  bottom: -130px; right: -150px;
+  background: radial-gradient(circle at 60% 60%, #A6CE39, #7bbf2a);
+  opacity: 0.2;
+  filter: blur(110px);
 }
 
 .itg__blob--3 {
-  width: 360px;
-  height: 360px;
-  top: 35%;
-  left: 52%;
-  background: #FBB040;
-  opacity: 0.18;
+  width: 420px; height: 420px;
+  top: 38%; left: 50%;
+  background: radial-gradient(circle at 50% 50%, #FBB040, #e8a020);
+  opacity: 0.13;
+  filter: blur(80px);
 }
 
-/* ── Container z-index above blobs ───────────────────────── */
+/* ── Container ────────────────────────────────────────────── */
 .itg .container {
   position: relative;
   z-index: 1;
 }
 
-/* ── Overrides de header/título só nesta seção ───────────── */
+/* ── Section header overrides ─────────────────────────────── */
 .itg .section__header {
-  margin-bottom: 40px;   /* reduz espaço abaixo do header */
+  margin-bottom: 56px;
 }
 
 .itg .section__title {
-  font-size: clamp(22px, 3vw, 34px);   /* menor que o global (28–48px) */
+  font-size: clamp(22px, 2.8vw, 34px);
   margin-bottom: 10px;
 }
 
-/* ── Showcase wrapper ─────────────────────────────────────── */
-.itg__showcase {
-  display: flex;
-  flex-direction: column;
+/* ============================================================
+   2-column body layout
+   ============================================================ */
+.itg__body {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 56px;
   align-items: center;
-  gap: 14px;
-  max-width: 750px;
-  margin: 0 auto;
 }
 
-/* ── Stack container ──────────────────────────────────────── */
+/* ============================================================
+   Left panel — feature tabs
+   ============================================================ */
+.itg__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.itg__tab {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  text-align: left;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  overflow: hidden;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.itg__tab:hover:not(.is-active) {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.itg__tab.is-active {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.07);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* Vertical progress fill — left border */
+.itg__tab-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--tc, #6C63FF);
+  transform: scaleY(0);
+  transform-origin: top center;
+  border-radius: 0 2px 2px 0;
+  will-change: transform;
+}
+
+/* Icon box */
+.itg__tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: background 0.25s ease;
+}
+
+/* Text */
+.itg__tab-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.itg__tab-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tc, #6C63FF);
+  margin-bottom: 3px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.itg__tab.is-active .itg__tab-label {
+  opacity: 1;
+}
+
+.itg__tab-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0a0a0a;
+  line-height: 1.35;
+  margin: 0 0 0;
+  transition: color 0.2s ease;
+}
+
+.itg__tab:not(.is-active) .itg__tab-title {
+  color: rgba(0, 0, 0, 0.55);
+  font-weight: 600;
+}
+
+/* Description — collapse when inactive */
+.itg__tab-desc {
+  font-size: 0.78rem;
+  color: rgba(0, 0, 0, 0.5);
+  line-height: 1.55;
+  margin-top: 0;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.25s ease,
+    margin-top 0.25s ease;
+}
+
+.itg__tab.is-active .itg__tab-desc {
+  max-height: 72px;
+  opacity: 1;
+  margin-top: 5px;
+}
+
+/* ============================================================
+   Right — card stack
+   ============================================================ */
+.itg__stack-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
 .itg__stack {
   position: relative;
   width: 100%;
   overflow: visible;
 }
 
-/*
-  Spacer invisível — único elemento em fluxo normal.
-  Define a altura exata do stack sem JavaScript.
-  Os cards reais são position:absolute em cima dele.
-*/
 .itg__spacer {
   visibility: hidden;
   pointer-events: none;
-  width: calc(100% - 36px); /* = largura do front card */
+  width: calc(100% - 44px);
 }
 
 .itg__spacer .itg__chrome {
-  height: 40px; /* mesma altura do chrome real */
+  height: 42px;
 }
 
 .itg__spacer .itg__screen {
@@ -106,33 +242,35 @@
   width: 100%;
 }
 
-/* ── Cada card (position absolute sobre o spacer) ─────────── */
+/* Cards */
 .itg__card {
   position: absolute;
   top: 0;
   left: 0;
-  width: calc(100% - 36px); /* deixa 36px livres para o x-offset do back card */
+  width: calc(100% - 44px);
   background: #ffffff;
   border-radius: 14px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.07);
   overflow: hidden;
   box-shadow:
     0 0 0 1px rgba(0, 0, 0, 0.03),
-    0 4px 12px rgba(0, 0, 0, 0.06),
-    0 16px 48px rgba(0, 0, 0, 0.09),
-    0 32px 80px rgba(0, 0, 0, 0.06);
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    0 12px 32px rgba(0, 0, 0, 0.08),
+    0 32px 64px rgba(0, 0, 0, 0.07),
+    0 64px 120px rgba(0, 0, 0, 0.05);
   will-change: transform, opacity;
 }
 
-/* ── Browser chrome ───────────────────────────────────────── */
+/* Browser chrome */
 .itg__chrome {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
-  background: #f0f0ee;
+  background: #ebebea;
   border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-  height: 40px;
+  height: 42px;
+  flex-shrink: 0;
 }
 
 .itg__chrome-dots {
@@ -141,18 +279,9 @@
   flex-shrink: 0;
 }
 
-.itg__dot--red,
-.itg__dot--yellow,
-.itg__dot--green {
-  display: block;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-}
-
-.itg__dot--red    { background: #FF5F57; }
-.itg__dot--yellow { background: #FEBC2E; }
-.itg__dot--green  { background: #28C840; }
+.itg__dot--red    { display: block; width: 11px; height: 11px; border-radius: 50%; background: #FF5F57; }
+.itg__dot--yellow { display: block; width: 11px; height: 11px; border-radius: 50%; background: #FEBC2E; }
+.itg__dot--green  { display: block; width: 11px; height: 11px; border-radius: 50%; background: #28C840; }
 
 .itg__chrome-bar {
   flex: 1;
@@ -160,11 +289,11 @@
   align-items: center;
   gap: 6px;
   background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.09);
   border-radius: 6px;
   padding: 5px 10px;
-  font-size: 10.5px;
-  color: rgba(0, 0, 0, 0.38);
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.36);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -172,7 +301,7 @@
 
 .itg__chrome-actions {
   display: flex;
-  gap: 8px;
+  gap: 7px;
   flex-shrink: 0;
 }
 
@@ -184,7 +313,6 @@
   background: rgba(0, 0, 0, 0.07);
 }
 
-/* ── Screenshot area ──────────────────────────────────────── */
 .itg__screen {
   aspect-ratio: 16 / 10;
   width: 100%;
@@ -192,24 +320,25 @@
   display: block;
 }
 
+
 /* ============================================================
-   PLACEHOLDER — Dashboard SaaS light mode
+   Dashboard placeholder — richer layout
    ============================================================ */
 .itg-ph {
   width: 100%;
   height: 100%;
-  background: #f2f4f8;
+  background: #f0f3f9;
   display: flex;
   overflow: hidden;
-  position: relative;
+  font-family: inherit;
 }
 
-/* ── Sidebar ──────────────────────────────────────────────── */
+/* Sidebar */
 .itg-ph__sidebar {
-  width: 64px;
+  width: 68px;
   background: #ffffff;
   border-right: 1px solid rgba(0, 0, 0, 0.06);
-  padding: 16px 10px;
+  padding: 14px 10px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -220,30 +349,29 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   padding: 0 2px;
 }
 
 .itg-ph__logo-icon {
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
+  width: 24px; height: 24px;
+  border-radius: 7px;
   background: var(--sc, #6C63FF);
-  opacity: 0.8;
+  opacity: 0.85;
   flex-shrink: 0;
 }
 
 .itg-ph__logo-text {
-  height: 8px;
-  width: 32px;
+  height: 8px; width: 34px;
   border-radius: 4px;
-  background: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .itg-ph__nav {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
+  flex: 1;
 }
 
 .itg-ph__nav-item {
@@ -251,7 +379,7 @@
   align-items: center;
   gap: 7px;
   padding: 7px 8px;
-  border-radius: 7px;
+  border-radius: 8px;
 }
 
 .itg-ph__nav-item--active {
@@ -260,15 +388,14 @@
 }
 
 .itg-ph__nav-icon {
-  width: 14px;
-  height: 14px;
+  width: 14px; height: 14px;
   border-radius: 3px;
   background: rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
 }
 
 .itg-ph__nav-item--active .itg-ph__nav-icon {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.65);
 }
 
 .itg-ph__nav-label {
@@ -282,7 +409,44 @@
   background: rgba(255, 255, 255, 0.5);
 }
 
-/* ── Main area ────────────────────────────────────────────── */
+/* Sidebar footer */
+.itg-ph__sidebar-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  margin-top: auto;
+}
+
+.itg-ph__avatar-sm {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--sc, #6C63FF);
+  opacity: 0.45;
+  flex-shrink: 0;
+}
+
+.itg-ph__sidebar-user {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.itg-ph__sidebar-name {
+  height: 6px; width: 36px;
+  border-radius: 3px;
+  background: rgba(0,0,0,0.12);
+}
+
+.itg-ph__sidebar-role {
+  height: 5px; width: 28px;
+  border-radius: 3px;
+  background: rgba(0,0,0,0.07);
+}
+
+/* Main area */
 .itg-ph__main {
   flex: 1;
   display: flex;
@@ -303,11 +467,22 @@
   flex-shrink: 0;
 }
 
+.itg-ph__topbar-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .itg-ph__topbar-title {
-  height: 12px;
-  width: 90px;
+  height: 11px; width: 96px;
   border-radius: 5px;
-  background: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.13);
+}
+
+.itg-ph__breadcrumb {
+  height: 7px; width: 60px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.06);
 }
 
 .itg-ph__topbar-right {
@@ -317,39 +492,31 @@
 }
 
 .itg-ph__search-bar {
-  width: 110px;
-  height: 24px;
+  width: 100px; height: 24px;
   border-radius: 6px;
-  background: #f2f4f8;
+  background: #f0f3f9;
   border: 1px solid rgba(0, 0, 0, 0.07);
 }
 
 .itg-ph__icon-btn {
-  width: 26px;
-  height: 26px;
+  width: 26px; height: 26px;
   border-radius: 6px;
   background: rgba(0, 0, 0, 0.05);
-}
-
-.itg-ph__icon-btn--bell {
   position: relative;
 }
 
 .itg-ph__icon-btn--bell::after {
   content: '';
   position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 6px;
-  height: 6px;
+  top: 4px; right: 4px;
+  width: 6px; height: 6px;
   border-radius: 50%;
   background: #FF5F57;
   border: 1.5px solid #ffffff;
 }
 
 .itg-ph__avatar {
-  width: 26px;
-  height: 26px;
+  width: 26px; height: 26px;
   border-radius: 50%;
   background: var(--sc, #6C63FF);
   opacity: 0.5;
@@ -359,8 +526,8 @@
 .itg-ph__kpis {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  padding: 12px 16px;
+  gap: 8px;
+  padding: 10px 14px;
   flex-shrink: 0;
 }
 
@@ -368,14 +535,33 @@
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 10px;
-  padding: 10px 12px;
+  padding: 10px 11px;
+}
+
+.itg-ph__kpi--accent {
+  background: var(--sc, #6C63FF);
+  border-color: transparent;
+}
+
+.itg-ph__kpi--accent .itg-ph__kpi-label,
+.itg-ph__kpi--accent .itg-ph__kpi-val,
+.itg-ph__kpi--accent .itg-ph__kpi-pct {
+  background: rgba(255, 255, 255, 0.35) !important;
+}
+
+.itg-ph__kpi--accent .itg-ph__kpi-badge {
+  background: rgba(255, 255, 255, 0.25) !important;
+}
+
+.itg-ph__kpi--accent .itg-ph__kpi-arrow {
+  background: rgba(255, 255, 255, 0.5) !important;
 }
 
 .itg-ph__kpi-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
 }
 
 .itg-ph__kpi-label {
@@ -385,19 +571,17 @@
 }
 
 .itg-ph__kpi-badge {
-  width: 20px;
-  height: 20px;
-  border-radius: 6px;
+  width: 18px; height: 18px;
+  border-radius: 5px;
   background: var(--sc, #6C63FF);
   opacity: 0.15;
   flex-shrink: 0;
 }
 
 .itg-ph__kpi-val {
-  height: 14px;
-  width: 55%;
+  height: 13px; width: 55%;
   border-radius: 5px;
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.14);
   margin-bottom: 6px;
 }
 
@@ -408,27 +592,25 @@
 }
 
 .itg-ph__kpi-arrow {
-  width: 10px;
-  height: 10px;
+  width: 10px; height: 10px;
   border-radius: 3px;
   background: var(--sc, #6C63FF);
-  opacity: 0.3;
+  opacity: 0.28;
 }
 
 .itg-ph__kpi-pct {
-  height: 6px;
-  width: 38px;
+  height: 6px; width: 34px;
   border-radius: 3px;
   background: rgba(0, 0, 0, 0.07);
 }
 
-/* Mid: chart + tracking */
+/* Mid: chart + list */
 .itg-ph__mid {
   flex: 1;
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 10px;
-  padding: 0 16px 12px;
+  gap: 8px;
+  padding: 0 14px 10px;
   overflow: hidden;
   min-height: 0;
 }
@@ -438,7 +620,7 @@
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 10px;
-  padding: 12px;
+  padding: 11px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -449,36 +631,31 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   flex-shrink: 0;
 }
 
 .itg-ph__chart-title,
 .itg-ph__track-title {
-  height: 9px;
-  width: 80px;
+  height: 9px; width: 80px;
   border-radius: 4px;
   background: rgba(0, 0, 0, 0.12);
 }
 
-.itg-ph__chart-tabs {
-  display: flex;
-  gap: 4px;
-}
+.itg-ph__chart-tabs { display: flex; gap: 4px; }
 
 .itg-ph__tab {
-  height: 20px;
-  width: 36px;
+  height: 19px; width: 34px;
   border-radius: 5px;
   background: rgba(0, 0, 0, 0.05);
 }
 
 .itg-ph__tab--active {
   background: var(--sc, #6C63FF);
-  opacity: 0.2;
+  opacity: 0.22;
 }
 
-/* Chart bars */
+/* Chart */
 .itg-ph__chart {
   flex: 1;
   position: relative;
@@ -507,196 +684,95 @@
   inset: 0;
   display: flex;
   align-items: flex-end;
-  gap: 4px;
+  gap: 3px;
   padding: 0 2px;
 }
 
 .itg-ph__bar {
   flex: 1;
-  border-radius: 4px 4px 0 0;
+  border-radius: 3px 3px 0 0;
   background: var(--sc, #6C63FF);
-  opacity: 0.22;
-  min-height: 8%;
+  opacity: 0.2;
+  transform-origin: bottom center;
+  will-change: transform;
+  min-height: 6%;
 }
 
 .itg-ph__bar:nth-child(4),
 .itg-ph__bar:nth-child(6),
 .itg-ph__bar:nth-child(11) {
-  opacity: 0.48;
+  opacity: 0.5;
 }
 
-/* Tracking card */
+/* Track/list card */
 .itg-ph__track-menu {
-  width: 16px;
-  height: 14px;
+  width: 16px; height: 14px;
   border-radius: 3px;
   background: rgba(0, 0, 0, 0.07);
 }
 
-.itg-ph__map {
-  flex: 1;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #e8edf5 0%, #d8e4f0 100%);
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 10px;
-  min-height: 0;
-}
-
-.itg-ph__map::after {
-  content: '';
-  position: absolute;
-  top: 40%;
-  left: 35%;
-  width: 50%;
-  height: 30%;
-  border-radius: 50%;
-  background: var(--sc, #6C63FF);
-  opacity: 0.12;
-  filter: blur(12px);
-}
-
-.itg-ph__track-info {
+.itg-ph__list {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-}
-
-.itg-ph__track-label {
-  height: 7px;
-  width: 55%;
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.08);
-}
-
-.itg-ph__track-val {
-  height: 9px;
-  width: 75%;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.13);
-}
-
-/* ============================================================
-   Progress, info, controls
-   ============================================================ */
-
-/* ── Progress bar ─────────────────────────────────────────── */
-.itg__progress-track {
-  width: calc(100% - 36px); /* alinha com o card */
-  height: 2px;
-  background: rgba(0, 0, 0, 0.08);
-  border-radius: 2px;
-  overflow: hidden;
-  align-self: flex-start;
-}
-
-.itg__progress-fill {
-  height: 100%;
-  width: 100%;
-  border-radius: 2px;
-  transform-origin: left center;
-  transform: scaleX(0);
-}
-
-/* ── Info row ─────────────────────────────────────────────── */
-.itg__info {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding-right: 36px; /* alinha com o card */
-}
-
-.itg__info-text {
+  gap: 8px;
   flex: 1;
-  min-width: 0;
+  justify-content: center;
 }
 
-.itg__title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #0a0a0a;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.3;
-  margin-bottom: 4px;
-}
-
-.itg__subtitle {
-  font-size: 0.83rem;
-  color: rgba(0, 0, 0, 0.52);
-  line-height: 1.55;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* ── Nav controls ─────────────────────────────────────────── */
-.itg__controls {
+.itg-ph__list-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 7px;
+}
+
+.itg-ph__list-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--sc, #6C63FF);
+  opacity: 0.35;
   flex-shrink: 0;
 }
 
-.itg__nav-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 33px;
-  height: 33px;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  background: #ffffff;
-  color: rgba(0, 0, 0, 0.45);
-  cursor: pointer;
-  transition:
-    border-color 0.2s ease,
-    color 0.2s ease,
-    box-shadow 0.2s ease;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+.itg-ph__list-bar {
+  height: 7px;
+  border-radius: 4px;
+  background: var(--sc, #6C63FF);
+  opacity: 0.18;
 }
 
-.itg__nav-btn:hover {
-  border-color: rgba(0, 0, 0, 0.22);
-  color: #0a0a0a;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.itg__dots {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
-
-.itg__dot {
-  width: 6px;
-  height: 6px;
+.itg-ph__list-val {
+  height: 7px; width: 22px;
   border-radius: 3px;
-  border: none;
-  background: rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  padding: 0;
-  transition:
-    width 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-    background 0.25s ease;
-}
-
-.itg__dot.is-active {
-  width: 20px;
-}
-
-.itg__dot:hover:not(.is-active) {
-  background: rgba(0, 0, 0, 0.28);
+  background: rgba(0,0,0,0.1);
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
 /* ============================================================
    Responsive
    ============================================================ */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+  .itg__body {
+    grid-template-columns: 300px 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 860px) {
+  .itg__body {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .itg__stack-wrap {
+    order: -1;
+  }
+
+  .itg__spacer,
+  .itg__card {
+    width: calc(100% - 44px);
+  }
+
   .itg-ph__kpis {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -708,47 +784,38 @@
   .itg-ph__mid {
     grid-template-columns: 1fr;
   }
-
-  .itg__chrome-actions {
-    display: none;
-  }
-
-  .itg-ph__logo-text {
-    display: none;
-  }
 }
 
 @media (max-width: 560px) {
-  .itg__showcase {
-    gap: 16px;
+  .section--light.itg {
+    padding: 72px 0 88px;
   }
 
-  /* Esconde o stack e deixa só o card da frente no mobile */
-  .itg__stack {
-    overflow: hidden;
+  .itg__body {
+    gap: 28px;
   }
 
-  /* Reduz stack offset no mobile */
   .itg__spacer,
   .itg__card {
     width: 100%;
   }
 
-  .itg__progress-track,
-  .itg__info {
-    padding-right: 0;
-    width: 100%;
+  .itg__stack {
+    overflow: hidden;
   }
 
-  .itg__info {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
+  .itg__chrome-actions {
+    display: none;
   }
 
   .itg-ph__sidebar {
-    width: 44px;
-    padding: 12px 7px;
+    width: 46px;
+    padding: 10px 7px;
+  }
+
+  .itg-ph__logo-text,
+  .itg-ph__sidebar-user {
+    display: none;
   }
 
   .itg-ph__kpis {
@@ -756,11 +823,13 @@
     padding: 8px 10px;
   }
 
-  .itg-ph__topbar {
-    padding: 8px 10px;
+  .itg-ph__topbar,
+  .itg-ph__mid {
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
-  .itg-ph__mid {
-    padding: 0 10px 8px;
+  .itg-ph__search-bar {
+    display: none;
   }
 }
