@@ -22,90 +22,48 @@
   overflow: hidden;
 }
 
-/* Radial glow (brand teal, subtle) */
-.splash__glow {
+/* Rings container — centered absolutely */
+.splash__rings {
   position: absolute;
-  width: min(480px, 100vw);
-  height: min(480px, 100vw);
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(0, 160, 177, 0.12) 0%,
-    rgba(0, 160, 177, 0.04) 50%,
-    transparent 70%
-  );
+  inset: 0;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Crosshair lines — extend full viewport */
-.splash__line {
-  position: absolute;
-  background: rgba(0, 160, 177, 0.1);
-  pointer-events: none;
-  transform-origin: center;
-}
-
-.splash__line--h {
-  width: 100vw;
-  height: 1px;
-  top: 50%;
-  left: 0;
-}
-
-.splash__line--v {
-  width: 1px;
-  height: 100vh;
-  left: 50%;
-  top: 0;
-}
-
-/* Orbital rings — centering via GSAP xPercent/yPercent, not CSS transform */
+/* Rings — pure CSS, no GSAP, no transform conflicts */
 .splash__ring {
   position: absolute;
   border-radius: 50%;
-  border-style: solid;
-  pointer-events: none;
-  top: 50%;
-  left: 50%;
+  border: 1px solid rgba(0, 160, 177, 0.25);
+  animation: splashRingPulse 2s ease-in-out infinite;
 }
 
 .splash__ring--a {
-  width: min(220px, 55vw);
-  height: min(220px, 55vw);
-  border-width: 1px;
-  border-color: rgba(0, 160, 177, 0.3);
+  width: min(200px, 50vw);
+  height: min(200px, 50vw);
+  animation-delay: 0s;
 }
 
 .splash__ring--b {
-  width: min(320px, 78vw);
-  height: min(320px, 78vw);
-  border-width: 1px;
-  border-color: rgba(29, 96, 118, 0.18);
+  width: min(300px, 75vw);
+  height: min(300px, 75vw);
   border-style: dashed;
+  border-color: rgba(29, 96, 118, 0.15);
+  animation-delay: 0.15s;
 }
 
 .splash__ring--c {
-  width: min(420px, 95vw);
-  height: min(420px, 95vw);
-  border-width: 1px;
-  border-color: rgba(0, 160, 177, 0.08);
+  width: min(400px, 92vw);
+  height: min(400px, 92vw);
+  border-color: rgba(0, 160, 177, 0.07);
+  animation-delay: 0.3s;
 }
 
-/* Orbital dots — transform owned entirely by GSAP (xPercent/yPercent) */
-.splash__dot {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #fbb040;
-  box-shadow: 0 0 8px rgba(251, 176, 64, 0.7);
-}
-
-.splash__dot--alt {
-  background: #00a0b1;
-  box-shadow: 0 0 8px rgba(0, 160, 177, 0.6);
-  width: 4px;
-  height: 4px;
+@keyframes splashRingPulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 0.9; transform: scale(1.03); }
 }
 
 /* Logo wrapper */
@@ -121,22 +79,18 @@
 
 .splash__svg {
   width: 100%;
-  max-width: 340px;
+  max-width: 320px;
   height: auto;
   display: block;
 }
 
 @media (max-width: 768px) {
-  .splash__logo-wrap {
-    padding: 0 56px;
-  }
-
   .splash__svg {
-    max-width: 238px;
+    max-width: 224px;
   }
 }
 
-/* The exit wipe panel — GSAP sets yPercent:100 on mount, then animates to 0 */
+/* Exit wipe — GSAP sets yPercent:100, then animates to 0 */
 .splash__wipe {
   position: absolute;
   inset: 0;
