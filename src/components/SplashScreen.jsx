@@ -26,43 +26,45 @@ export default function SplashScreen({ onComplete }) {
     const glow  = glowRef.current
     const wipe  = wipeRef.current
 
-    // wipe starts fully below — never covers the splash content
-    gsap.set(wipe,  { yPercent: 100 })
-
-    // all content starts invisible
-    gsap.set([logo, ringA, ringB, ringC, glow, lineH, lineV, ...dots], { opacity: 0 })
-    gsap.set(logo,  { scale: 0.8, y: 16 })
-    gsap.set([ringA, ringB, ringC], { scale: 0.6 })
-    gsap.set(dots,  { scale: 0 })
-    gsap.set(lineH, { scaleX: 0 })
-    gsap.set(lineV, { scaleY: 0 })
-    gsap.set(glow,  { scale: 0.7 })
-
-    const tl = gsap.timeline({
-      defaults: { ease: 'expo.out' },
+    // rings: centering is done via CSS left/top 50% + xPercent/yPercent in GSAP
+    // so GSAP owns the full transform — no conflict
+    gsap.set([ringA, ringB, ringC], {
+      xPercent: -50, yPercent: -50,
+      opacity: 0, scale: 0.6,
     })
 
-    // glow + logo entrance
+    // dots: same — GSAP owns transform entirely
+    gsap.set(dots, {
+      xPercent: -50, yPercent: -50,
+      opacity: 0, scale: 0,
+    })
+
+    gsap.set(logo,  { opacity: 0, scale: 0.85, y: 14 })
+    gsap.set(glow,  { opacity: 0, scale: 0.7, xPercent: -50, yPercent: -50 })
+    gsap.set(lineH, { opacity: 0, scaleX: 0 })
+    gsap.set(lineV, { opacity: 0, scaleY: 0 })
+    gsap.set(wipe,  { yPercent: 100 })
+
+    const tl = gsap.timeline({ defaults: { ease: 'expo.out' } })
+
+    // entrance
     tl.to(glow, { opacity: 1, scale: 1, duration: 0.5 }, 0)
     tl.to(logo, { opacity: 1, scale: 1, y: 0, duration: 0.45 }, 0.08)
 
-    // crosshair lines
     tl.to(lineH, { opacity: 1, scaleX: 1, duration: 0.35 }, 0.22)
     tl.to(lineV, { opacity: 1, scaleY: 1, duration: 0.35 }, 0.22)
 
-    // rings cascade
     tl.to(ringA, { opacity: 1, scale: 1, duration: 0.4 }, 0.32)
     tl.to(ringB, { opacity: 1, scale: 1, duration: 0.42 }, 0.4)
     tl.to(ringC, { opacity: 1, scale: 1, duration: 0.44 }, 0.48)
 
-    // dots pop in
     tl.to(dots, {
       opacity: 1, scale: 1, duration: 0.22,
       ease: 'back.out(2.5)',
       stagger: { each: 0.04, from: 'random' },
     }, 0.56)
 
-    // no hold — exit immediately after entrance (~1.0s mark)
+    // exit
     tl.to(dots, {
       opacity: 0, scale: 0, duration: 0.15,
       ease: 'power2.in',
@@ -82,11 +84,8 @@ export default function SplashScreen({ onComplete }) {
       opacity: 0, y: -16, scale: 1.05, duration: 0.22, ease: 'power2.in',
     }, '-=0.14')
 
-    // wipe — total ~2s
     tl.to(wipe, {
-      yPercent: 0,
-      duration: 0.4,
-      ease: 'expo.inOut',
+      yPercent: 0, duration: 0.4, ease: 'expo.inOut',
     }, '-=0.05')
 
     tl.call(() => {
@@ -113,7 +112,7 @@ export default function SplashScreen({ onComplete }) {
 
   return (
     <div className="splash" ref={splashRef}>
-      <div className="splash__glow"            ref={glowRef}  />
+      <div className="splash__glow"                ref={glowRef}  />
       <div className="splash__line splash__line--h" ref={lineHRef} />
       <div className="splash__line splash__line--v" ref={lineVRef} />
       <div className="splash__ring splash__ring--a" ref={ringARef} />
@@ -143,7 +142,6 @@ export default function SplashScreen({ onComplete }) {
         </svg>
       </div>
 
-      {/* Slides up from below to cover splash at exit */}
       <div className="splash__wipe" ref={wipeRef} />
     </div>
   )
