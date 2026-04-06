@@ -6,7 +6,10 @@
       "Bash(ffmpeg -i /Users/Victor/Documents/dataweb-site/public/assets/herovideo.mp4)",
       "Bash(mdls -name kMDItemCodecs /Users/Victor/Documents/dataweb-site/public/assets/herovideo.mp4)",
       "WebFetch(domain:codepen.io)",
-      "Bash(wc -l /Users/Victor/Documents/Projects/dataweb-site/src/styles/*.css)"
+      "Bash(wc -l /Users/Victor/Documents/Projects/dataweb-site/src/styles/*.css)",
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)",
+      "Bash(git push:*)"
     ]
   }
 }

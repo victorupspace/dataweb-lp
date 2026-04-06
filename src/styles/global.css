@@ -13,13 +13,19 @@
    ============================================================ */
 .splash {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   z-index: 9999;
   background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 /* Rings container — centered absolutely */
@@ -74,19 +80,20 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 0 40px;
+  padding: 0 clamp(24px, 8vw, 80px);
 }
 
 .splash__svg {
   width: 100%;
-  max-width: 320px;
+  max-width: clamp(180px, 50vw, 360px);
   height: auto;
   display: block;
+  margin: 0 auto;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .splash__svg {
-    max-width: 224px;
+    max-width: clamp(160px, 72vw, 260px);
   }
 }
 
