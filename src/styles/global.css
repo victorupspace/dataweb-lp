@@ -1782,9 +1782,12 @@ ul, ol {
   display: flex;
   align-items: stretch;
   height: 56px;
-  transform: translateY(100%);
+  transform: translateY(calc(100% + env(safe-area-inset-bottom, 0px)));
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 -2px 24px rgba(0, 0, 0, 0.35);
+  /* Previne que a barra empurre conteúdo */
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .cbar--visible {
@@ -1876,32 +1879,58 @@ ul, ol {
 @media (max-width: 768px) {
   .cbar {
     height: auto;
-    flex-direction: column;
+    flex-direction: row;
+    /* Safe area para iPhones com home indicator */
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -1px 0 rgba(255,255,255,0.06), 0 -8px 32px rgba(0,0,0,0.4);
   }
 
+  /* Label some — espaço é precioso no mobile */
   .cbar__label {
-    padding: 12px 20px;
-    justify-content: center;
+    display: none;
   }
 
   .cbar__actions {
+    flex: 1;
     flex-direction: row;
+    background: #001f2d;
   }
 
   .cbar__item {
-    padding: 12px 16px;
+    flex: 1;
     flex-direction: column;
-    gap: 4px;
-    font-size: 11px;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 10px 8px 11px;
   }
 
   .cbar__item--whatsapp {
-    padding: 12px 16px;
+    padding: 10px 8px 11px;
+    flex: 1.2;
+  }
+
+  .cbar__icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Sub e main ficam menores e empilhados */
+  .cbar__item-sub {
+    font-size: 9px;
+    letter-spacing: 0.02em;
+  }
+
+  .cbar__item-main {
+    font-size: 10px;
+    letter-spacing: 0.05em;
   }
 
   .cbar__divider {
     width: 1px;
     height: auto;
+    align-self: stretch;
+    margin: 8px 0;
   }
 }
 
