@@ -9,7 +9,11 @@
       "Bash(wc -l /Users/Victor/Documents/Projects/dataweb-site/src/styles/*.css)",
       "Bash(git add:*)",
       "Bash(git commit -m ':*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(ffprobe -v quiet -print_format json -show_streams /Users/Victor/Documents/Projects/dataweb-site/public/assets/rocket04.mov)",
+      "Bash(ffprobe /Users/Victor/Documents/Projects/dataweb-site/public/assets/rocket04.mov)",
+      "Read(//usr/local/bin/**)",
+      "Read(//opt/homebrew/**)"
     ]
   }
 }

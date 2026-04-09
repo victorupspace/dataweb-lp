@@ -564,11 +564,23 @@
   .ana__stage {
     min-height: unset;
     flex-direction: column;
-    gap: 24px;
+    align-items: center;
+    gap: 32px;
   }
   .ana__rings      { display: none; }
   .ana__connectors { display: none; }
   .ana__stripe     { display: none; }
+
+  .ana__center {
+    order: -1;
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .ana__video-frame {
+    width: 100%;
+    max-width: 560px;
+  }
 
   .ana__cards {
     position: static;
@@ -586,18 +598,12 @@
   }
 
   .ana__card-connector { display: none; }
-
-  .ana__video-frame {
-    width: 100%;
-    max-width: 540px;
-  }
 }
 
 @media (max-width: 560px) {
   .ana { padding: 80px 0 100px; }
   .ana__header { margin-bottom: 48px; }
   .ana__corner { display: none; }
-  .ana__cards  { grid-template-columns: 1fr; }
   .ana__video-frame { max-width: 100%; }
   .ana__video-chrome-actions { display: none; }
 }

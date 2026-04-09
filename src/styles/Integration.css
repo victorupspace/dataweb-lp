@@ -631,23 +631,110 @@
 }
 
 @media (max-width: 860px) {
-  .itg__body { grid-template-columns: 1fr; gap: 40px; }
-  .itg__stack-wrap { order: -1; }
-  .itg__spacer, .itg__card { width: calc(100% - 44px); }
-  .itg-ph__kpis { grid-template-columns: repeat(2, 1fr); }
-  .itg-ph__track-card { display: none; }
-  .itg-ph__mid { grid-template-columns: 1fr; }
+  /* Card stack some — foco total no accordion */
+  .itg__stack-wrap { display: none; }
+
+  .itg__body {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  /* Panel vira accordion full-width */
+  .itg__panel {
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.02);
+  }
+
+  .itg__tab {
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    padding: 18px 20px;
+    box-shadow: none;
+  }
+
+  .itg__tab:last-child {
+    border-bottom: none;
+  }
+
+  .itg__tab.is-active {
+    background: rgba(255,255,255,0.06);
+    box-shadow: none;
+    border-color: rgba(255,255,255,0.07);
+  }
+
+  /* Seta indicadora de accordion */
+  .itg__tab::after {
+    content: '';
+    display: block;
+    width: 8px; height: 8px;
+    border-right: 1.5px solid rgba(255,255,255,0.25);
+    border-bottom: 1.5px solid rgba(255,255,255,0.25);
+    transform: rotate(45deg) translateY(-3px);
+    flex-shrink: 0;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+    margin-left: auto;
+    align-self: center;
+  }
+
+  .itg__tab.is-active::after {
+    transform: rotate(-135deg) translateY(-3px);
+    border-color: var(--tc, #6C63FF);
+  }
+
+  /* Mini preview inline quando ativo */
+  .itg__tab.is-active .itg__tab-desc {
+    max-height: 120px;
+  }
+
+  /* Progress fill vira linha de topo no accordion */
+  .itg__tab-fill {
+    width: 100%;
+    height: 3px;
+    top: 0; left: 0;
+    border-radius: 0;
+    transform-origin: left center;
+  }
+
+  .itg__tab-icon {
+    width: 36px; height: 36px;
+  }
+
+  .itg__tab-title {
+    font-size: 0.9rem;
+  }
+
+  /* Número de ordem — contexto visual de lista */
+  .itg__tab-label {
+    opacity: 1;
+  }
 }
 
 @media (max-width: 560px) {
   .section--dark.itg { padding: 80px 0 100px; }
-  .itg__body { gap: 28px; }
-  .itg__spacer, .itg__card { width: 100%; }
-  .itg__stack { overflow: hidden; }
-  .itg__chrome-actions { display: none; }
-  .itg-ph__sidebar { width: 48px; padding: 10px 7px; }
-  .itg-ph__logo-text, .itg-ph__sidebar-user { display: none; }
-  .itg-ph__kpis { gap: 6px; padding: 8px 10px; }
-  .itg-ph__topbar, .itg-ph__mid { padding-left: 10px; padding-right: 10px; }
-  .itg-ph__search-bar { display: none; }
+
+  .itg__panel {
+    border-radius: 16px;
+  }
+
+  .itg__tab {
+    padding: 16px 16px;
+    gap: 12px;
+  }
+
+  .itg__tab-icon {
+    width: 32px; height: 32px;
+    border-radius: 9px;
+  }
+
+  .itg__tab-title {
+    font-size: 0.84rem;
+  }
+
+  .itg__tab-desc {
+    font-size: 0.75rem;
+  }
 }

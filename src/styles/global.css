@@ -524,6 +524,14 @@ ul, ol {
   object-position: center;
 }
 
+@media (max-width: 768px) {
+  .hero__video {
+    object-fit: cover;
+    object-position: right center;
+  }
+}
+
+
 .hero__bg-placeholder {
   width: 100%;
   height: 100%;
@@ -2016,6 +2024,7 @@ ul, ol {
     padding-top: calc(var(--header-height) + 28px);
     padding-bottom: 28px;
   }
+
 
   /* Panel adapts to full width on mobile */
   .hero__panel-highlight {
