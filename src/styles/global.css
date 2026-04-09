@@ -1777,21 +1777,31 @@ ul, ol {
   position: fixed;
   bottom: 0;
   left: 0;
-  right: 0;
+  width: 100vw;
+  max-width: 100%;
   z-index: 900;
   display: flex;
   align-items: stretch;
   height: 56px;
   transform: translateY(calc(100% + env(safe-area-inset-bottom, 0px)));
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 -2px 24px rgba(0, 0, 0, 0.35);
-  /* Previne que a barra empurre conteúdo */
-  will-change: transform;
+  opacity: 0;
+  overflow: hidden;
+  /* Slide-out rápido e direto */
+  transition:
+    transform 0.28s cubic-bezier(0.4, 0, 1, 1),
+    opacity   0.2s ease;
+  box-shadow: 0 -1px 0 rgba(255,255,255,0.05), 0 -8px 40px rgba(0,0,0,0.4);
+  will-change: transform, opacity;
   backface-visibility: hidden;
 }
 
 .cbar--visible {
   transform: translateY(0);
+  opacity: 1;
+  /* Slide-in com spring suave */
+  transition:
+    transform 0.52s cubic-bezier(0.34, 1.15, 0.64, 1),
+    opacity   0.3s ease;
 }
 
 /* Left label */

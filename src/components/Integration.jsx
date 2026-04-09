@@ -296,18 +296,16 @@ export default function Integration() {
   useEffect(() => {
     function killFloat() {
       floatTween.current?.kill()
-      // Reset all cards' float offset
-      cardRefs.current.forEach(el => el && gsap.set(el, { y: gsap.getProperty(el, 'y') }))
     }
 
     function startFloat(idx) {
       killFloat()
       const card = cardRefs.current[idx]
       if (!card) return
-      const currentY = gsap.getProperty(card, 'y')
+      const currentY = Number(gsap.getProperty(card, 'y'))
       floatTween.current = gsap.to(card, {
-        y: Number(currentY) - 10,
-        duration: 2.8,
+        y: currentY - 6,
+        duration: 2.2,
         ease: 'sine.inOut',
         repeat: -1,
         yoyo: true,
@@ -320,7 +318,7 @@ export default function Integration() {
       const bars = card.querySelectorAll('.itg-ph__bar')
       gsap.fromTo(bars,
         { scaleY: 0, transformOrigin: 'bottom center' },
-        { scaleY: 1, duration: 0.75, stagger: 0.04, ease: 'power2.out', delay: 0.2 }
+        { scaleY: 1, duration: 0.55, stagger: 0.03, ease: 'power3.out' }
       )
     }
 
@@ -338,25 +336,32 @@ export default function Integration() {
       gsap.set(fill, { scaleY: 0, transformOrigin: 'top center' })
       progressTween.current = gsap.to(fill, {
         scaleY: 1,
-        duration: 4,
+        duration: 4.5,
         ease: 'none',
         onComplete: () => fns.current.goTo?.((activeRef.current + 1) % N, 1),
       })
     }
 
     function goTo(newIdx, dir = 1) {
-      if (animating.current) return
       const oldIdx = activeRef.current
       if (newIdx === oldIdx) return
+
+      // Interrompe animação atual imediatamente — não bloqueia clique
+      if (animating.current) {
+        cardRefs.current.forEach(el => el && gsap.killTweensOf(el))
+      }
+
       animating.current = true
       progressTween.current?.kill()
       killFloat()
 
+      // Atualiza estado imediatamente para o tab responder sem delay
+      activeRef.current = newIdx
+      setActive(newIdx)
+
       const tl = gsap.timeline({
         onComplete() {
           animating.current = false
-          activeRef.current = newIdx
-          setActive(newIdx)
           startProgress()
           startFloat(newIdx)
           animateBars(newIdx)
@@ -377,17 +382,19 @@ export default function Integration() {
 
         if (dir > 0 && oldRole === 'front' && newRole === 'hidden') {
           tl.to(el, {
-            x: -190, y: -65, scale: 0.82,
-            opacity: 0, rotateZ: -11,
-            duration: 0.58, ease: 'power3.inOut', zIndex: 0,
+            x: -160, y: -55, scale: 0.85,
+            opacity: 0, rotateZ: -8,
+            duration: 0.38, ease: 'power2.in', zIndex: 0,
           }, 0)
           return
         }
 
-        tl.to(el, { ...STACK[newRole], duration: 0.72, ease: 'power3.inOut' }, 0)
+        tl.to(el, {
+          ...STACK[newRole],
+          duration: 0.42,
+          ease: 'power3.out',
+        }, 0)
       })
-
-
     }
 
     fns.current = { goTo, startProgress }

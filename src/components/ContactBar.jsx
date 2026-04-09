@@ -1,10 +1,41 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export default function ContactBar() {
   const [visible, setVisible] = useState(false)
+  const lastY    = useRef(0)
+  const ticking  = useRef(false)
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.1)
+    const heroEl = document.getElementById('hero')
+
+    const update = () => {
+      const y         = window.scrollY
+      const heroH     = heroEl ? heroEl.offsetHeight : window.innerHeight
+      const pastHero  = y > heroH * 0.20       
+      const scrollingDown = y > lastY.current
+
+      if (!pastHero) {
+        // Dentro da hero — sempre esconde
+        setVisible(false)
+      } else if (scrollingDown) {
+        // Scrollando para baixo fora da hero — mostra
+        setVisible(true)
+      } else if (y < lastY.current - 8) {
+        // Scrollando para cima com threshold de 8px — esconde
+        setVisible(false)
+      }
+
+      lastY.current = y
+      ticking.current = false
+    }
+
+    const onScroll = () => {
+      if (!ticking.current) {
+        ticking.current = true
+        requestAnimationFrame(update)
+      }
+    }
+
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
