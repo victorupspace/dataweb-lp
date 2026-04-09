@@ -270,15 +270,19 @@ export default function Integration() {
   /* ── ScrollTrigger entry ── */
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(tabRefs.current, {
-        x: -50, opacity: 0, duration: 0.7,
-        stagger: 0.09, ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 68%',
-          once: true,
-        },
-      })
+      gsap.fromTo(tabRefs.current,
+        { x: -24, opacity: 0 },
+        {
+          x: 0, opacity: 1, duration: 0.55,
+          stagger: 0.07, ease: 'power2.out',
+          clearProps: 'transform',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 68%',
+            once: true,
+          },
+        }
+      )
       gsap.from(stackWrapRef.current, {
         x: 70, opacity: 0, duration: 0.95,
         ease: 'power3.out',
@@ -382,17 +386,17 @@ export default function Integration() {
 
         if (dir > 0 && oldRole === 'front' && newRole === 'hidden') {
           tl.to(el, {
-            x: -160, y: -55, scale: 0.85,
-            opacity: 0, rotateZ: -8,
-            duration: 0.38, ease: 'power2.in', zIndex: 0,
+            x: -190, y: -65, scale: 0.82,
+            opacity: 0, rotateZ: -6,
+            duration: 0.46, ease: 'power2.inOut', zIndex: 0,
           }, 0)
           return
         }
 
         tl.to(el, {
           ...STACK[newRole],
-          duration: 0.42,
-          ease: 'power3.out',
+          duration: 0.5,
+          ease: 'power2.out',
         }, 0)
       })
     }

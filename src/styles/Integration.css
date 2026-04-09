@@ -644,74 +644,86 @@
 
 @media (max-width: 860px) {
   .itg__stack-wrap { display: none; }
-  .itg__body { grid-template-columns: 1fr; gap: 0; }
+
+  .itg__body {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
 
   .itg__panel {
-    gap: 0;
-    border-radius: 18px;
-    overflow: visible;
-    background: transparent;
-    border: none;
+    gap: 8px;
   }
 
+  /* Reset completo do tab para mobile */
   .itg__tab {
-    align-items: center;
-    overflow: visible;
-    border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.07);
-    margin-bottom: 6px;
-    padding: 12px 14px;
+    align-items: center !important;
+    overflow: visible !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    padding: 12px 14px !important;
+    gap: 12px !important;
     transform: none !important;
+    transition: background 0.18s ease, border-color 0.18s ease !important;
   }
-
-  .itg__tab:last-child { margin-bottom: 0; }
 
   .itg__tab:hover:not(.is-active) {
     transform: none !important;
-    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.12) !important;
   }
 
-  .itg__tab:active:not(.is-active) {
-    transform: none !important;
+  .itg__tab:active {
+    transform: scale(0.98) !important;
   }
 
   .itg__tab.is-active {
-    border-color: color-mix(in srgb, var(--tc, #6C63FF) 40%, transparent);
-    background: rgba(255,255,255,0.06);
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--tc, #6C63FF) 12%, transparent);
+    border-color: color-mix(in srgb, var(--tc, #6C63FF) 50%, transparent) !important;
+    background: rgba(255,255,255,0.06) !important;
+    box-shadow: none !important;
   }
 
-  .itg__tab-fill { display: none; }
+  /* Esconde fill — sem animação de progresso no mobile */
+  .itg__tab-fill {
+    display: none !important;
+  }
 
+  /* Ícone centralizado */
   .itg__tab-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    flex-shrink: 0;
-    margin-top: 0;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 9px !important;
+    flex-shrink: 0 !important;
+    margin-top: 0 !important;
   }
 
-  .itg__tab-label { opacity: 1; }
+  /* Label sempre visível */
+  .itg__tab-label {
+    opacity: 1 !important;
+    font-size: 0.62rem !important;
+    margin-bottom: 2px !important;
+  }
 
-  .itg__tab:not(.is-active) .itg__tab-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  /* Título sempre em 1 linha, ativo em normal */
+  .itg__tab-title {
+    font-size: 0.84rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
 
   .itg__tab.is-active .itg__tab-title {
-    white-space: normal;
+    white-space: normal !important;
+    color: rgba(255,255,255,0.95) !important;
   }
 
+  /* Desc abre no ativo */
   .itg__tab.is-active .itg__tab-desc {
-    max-height: 120px;
-    opacity: 1;
-    margin-top: 5px;
+    max-height: 100px !important;
+    opacity: 1 !important;
+    margin-top: 4px !important;
+    font-size: 0.76rem !important;
   }
 }
 
 @media (max-width: 560px) {
   .section--dark.itg { padding: 80px 0 100px; }
-  .itg__tab { padding: 11px 13px; gap: 12px; }
-  .itg__tab-icon { width: 34px; height: 34px; border-radius: 9px; }
 }
