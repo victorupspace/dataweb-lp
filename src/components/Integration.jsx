@@ -249,9 +249,7 @@ export default function Integration() {
   const blob2Ref      = useRef(null)
   const blob3Ref      = useRef(null)
   const activeRef     = useRef(0)
-  const animating     = useRef(false)
   const progressTween = useRef(null)
-  const floatTween    = useRef(null)
   const fns           = useRef({ goTo: null, startProgress: null })
   const sectionRef    = useRef(null)
   const panelRef      = useRef(null)
@@ -283,61 +281,34 @@ export default function Integration() {
           },
         }
       )
-      gsap.from(stackWrapRef.current, {
-        x: 70, opacity: 0, duration: 0.95,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 68%',
-          once: true,
-        },
-      })
+      gsap.fromTo(stackWrapRef.current,
+        { x: 40, opacity: 0 },
+        {
+          x: 0, opacity: 1, duration: 0.7,
+          ease: 'power3.out',
+          clearProps: 'transform,opacity',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 68%',
+            once: true,
+          },
+        }
+      )
     })
     return () => ctx.revert()
   }, [])
 
   /* ── Carousel ── */
   useEffect(() => {
-    function killFloat() {
-      floatTween.current?.kill()
-    }
-
-    function startFloat(idx) {
-      killFloat()
-      const card = cardRefs.current[idx]
-      if (!card) return
-      const currentY = Number(gsap.getProperty(card, 'y'))
-      floatTween.current = gsap.to(card, {
-        y: currentY - 6,
-        duration: 2.2,
-        ease: 'sine.inOut',
-        repeat: -1,
-        yoyo: true,
-      })
-    }
-
-    function animateBars(idx) {
-      const card = cardRefs.current[idx]
-      if (!card) return
-      const bars = card.querySelectorAll('.itg-ph__bar')
-      gsap.fromTo(bars,
-        { scaleY: 0, transformOrigin: 'bottom center' },
-        { scaleY: 1, duration: 0.55, stagger: 0.03, ease: 'power3.out' }
-      )
-    }
-
     function startProgress() {
       tabFillRefs.current.forEach((el, i) => {
         if (!el) return
         gsap.killTweensOf(el)
-        if (i !== activeRef.current) gsap.set(el, { scaleY: 0 })
+        gsap.set(el, { scaleY: i === activeRef.current ? 0 : 0, transformOrigin: 'top center' })
       })
-
       const fill = tabFillRefs.current[activeRef.current]
       if (!fill) return
-
       progressTween.current?.kill()
-      gsap.set(fill, { scaleY: 0, transformOrigin: 'top center' })
       progressTween.current = gsap.to(fill, {
         scaleY: 1,
         duration: 4.5,
@@ -350,25 +321,30 @@ export default function Integration() {
       const oldIdx = activeRef.current
       if (newIdx === oldIdx) return
 
-      // Interrompe animação atual imediatamente — não bloqueia clique
-      if (animating.current) {
-        cardRefs.current.forEach(el => el && gsap.killTweensOf(el))
-      }
-
-      animating.current = true
+      // Mata tudo antes de começar — sem estado residual
       progressTween.current?.kill()
-      killFloat()
+      gsap.killTweensOf(cardRefs.current)
 
-      // Atualiza estado imediatamente para o tab responder sem delay
+      // Posiciona cards ocultos no ponto de entrada correto
+      cardRefs.current.forEach((el, i) => {
+        if (!el) return
+        const oldRole = getRole(i, oldIdx)
+        const newRole = getRole(i, newIdx)
+        if (oldRole === 'hidden' && newRole !== 'hidden') {
+          gsap.set(el, dir > 0
+            ? { ...STACK.back, x: 66, y: 54, opacity: 0, zIndex: 0 }
+            : { ...STACK.back, x: -20, y: -20, opacity: 0, zIndex: 0 }
+          )
+        }
+      })
+
       activeRef.current = newIdx
       setActive(newIdx)
 
       const tl = gsap.timeline({
+        defaults: { duration: 0.45, ease: 'power3.out' },
         onComplete() {
-          animating.current = false
           startProgress()
-          startFloat(newIdx)
-          animateBars(newIdx)
         },
       })
 
@@ -377,44 +353,33 @@ export default function Integration() {
         const oldRole = getRole(i, oldIdx)
         const newRole = getRole(i, newIdx)
 
-        if (oldRole === 'hidden' && newRole !== 'hidden') {
-          gsap.set(el, dir > 0
-            ? { ...STACK.hidden, x: 66, y: 54, zIndex: 0 }
-            : { ...STACK.hidden, x: -28, y: -28, zIndex: 0 }
-          )
-        }
-
         if (dir > 0 && oldRole === 'front' && newRole === 'hidden') {
-          tl.to(el, {
-            x: -190, y: -65, scale: 0.82,
-            opacity: 0, rotateZ: -6,
-            duration: 0.46, ease: 'power2.inOut', zIndex: 0,
-          }, 0)
+          tl.to(el, { x: -160, y: -50, scale: 0.88, opacity: 0, rotateZ: -5, zIndex: 0 }, 0)
           return
         }
 
-        tl.to(el, {
-          ...STACK[newRole],
-          duration: 0.5,
-          ease: 'power2.out',
-        }, 0)
+        if (dir < 0 && oldRole === 'back' && newRole === 'hidden') {
+          tl.to(el, { x: 80, y: 60, scale: 0.82, opacity: 0, zIndex: 0 }, 0)
+          return
+        }
+
+        tl.to(el, { ...STACK[newRole] }, 0)
       })
     }
 
     fns.current = { goTo, startProgress }
 
+    // Estado inicial limpo
     cardRefs.current.forEach((el, i) => {
       if (!el) return
       gsap.set(el, STACK[getRole(i, 0)])
     })
 
     startProgress()
-    startFloat(0)
-    animateBars(0)
 
     return () => {
       progressTween.current?.kill()
-      floatTween.current?.kill()
+      gsap.killTweensOf(cardRefs.current)
     }
   }, [])
 
