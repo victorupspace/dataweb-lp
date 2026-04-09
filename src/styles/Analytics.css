@@ -1,46 +1,128 @@
 /* ============================================================
-   ANALYTICS — BI Dashboard Showcase
+   ANALYTICS — Orbital BI Showcase  |  LIGHT MODE  (v4)
+   Acessibilidade: WCAG AA em todos os textos
    ============================================================ */
 
 /* ── Section ─────────────────────────────────────────────── */
+/* override section--light white background */
+.section--light.ana {
+  background: #f0f3f8;
+  color: #0a0a0a;
+}
+
 .ana {
   position: relative;
   overflow: hidden;
   padding: 120px 0 140px;
 }
 
-/* ── Atmospheric glows ────────────────────────────────────── */
-.ana__glow {
+/* ── Background blobs — brand yellow + green ─────────────── */
+.ana__blobs {
   position: absolute;
-  border-radius: 50%;
+  inset: 0;
   pointer-events: none;
   z-index: 0;
 }
 
-.ana__glow--1 {
-  width: 760px; height: 760px;
-  top: -200px; right: -180px;
-  background: radial-gradient(circle at 40% 40%, rgba(245, 197, 24, 0.13), transparent 60%);
-  filter: blur(70px);
+.ana__blob {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
 }
 
-.ana__glow--2 {
-  width: 640px; height: 640px;
-  bottom: -140px; left: -160px;
-  background: radial-gradient(circle at 60% 60%, rgba(108, 99, 255, 0.11), transparent 60%);
-  filter: blur(80px);
+/* Yellow/amber — top left */
+.ana__blob--1 {
+  width: 900px; height: 900px;
+  top: -280px; left: -240px;
+  background: radial-gradient(circle at 38% 38%, #FBB040 0%, #f5c518 45%, transparent 70%);
+  opacity: 0.22;
+  filter: blur(110px);
 }
 
-/* ── Dot grid overlay ─────────────────────────────────────── */
+/* Green — bottom right */
+.ana__blob--2 {
+  width: 800px; height: 800px;
+  bottom: -260px; right: -200px;
+  background: radial-gradient(circle at 62% 62%, #A6CE39 0%, #7bbf2a 40%, transparent 70%);
+  opacity: 0.19;
+  filter: blur(120px);
+}
+
+/* Warm center — very subtle */
+.ana__blob--3 {
+  width: 600px; height: 600px;
+  top: 30%; left: 42%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 50% 50%, #f5c518 0%, transparent 65%);
+  opacity: 0.06;
+  filter: blur(90px);
+}
+
+/* ── Dot grid ─────────────────────────────────────────────── */
 .ana__grid-overlay {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
-  background-size: 28px 28px;
+  background-image: radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px);
+  background-size: 32px 32px;
   pointer-events: none;
   z-index: 0;
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 40%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 20%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 20%, transparent 100%);
+}
+
+/* ── Corner radial accents ────────────────────────────────── */
+.ana__corner {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ana__corner--tl {
+  top: 0; left: 0;
+  width: 480px; height: 480px;
+  background: radial-gradient(circle at 0% 0%, rgba(245,197,24,0.18), transparent 60%);
+}
+
+.ana__corner--br {
+  bottom: 0; right: 0;
+  width: 480px; height: 480px;
+  background: radial-gradient(circle at 100% 100%, rgba(166,206,57,0.18), transparent 60%);
+}
+
+/* ── Decorative brand stripes ─────────────────────────────── */
+.ana__stripe {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 100px;
+}
+
+.ana__stripe--1 {
+  width: 2px; height: 200px;
+  top: 14%; left: 5.5%;
+  background: linear-gradient(180deg, rgba(245,197,24,0.4), transparent);
+  transform: rotate(12deg);
+}
+
+.ana__stripe--2 {
+  width: 2px; height: 160px;
+  top: 58%; left: 8%;
+  background: linear-gradient(180deg, rgba(166,206,57,0.35), transparent);
+  transform: rotate(-8deg);
+}
+
+.ana__stripe--3 {
+  width: 2px; height: 180px;
+  top: 10%; right: 6%;
+  background: linear-gradient(180deg, rgba(166,206,57,0.35), transparent);
+  transform: rotate(-14deg);
+}
+
+.ana__stripe--4 {
+  width: 2px; height: 140px;
+  bottom: 18%; right: 4.5%;
+  background: linear-gradient(180deg, rgba(245,197,24,0.4), transparent);
+  transform: rotate(10deg);
 }
 
 /* ── Container ────────────────────────────────────────────── */
@@ -53,889 +135,469 @@
    Header
    ============================================================ */
 .ana__header {
-  max-width: 860px;
-  margin-bottom: 72px;
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 72px;
 }
 
+/* Tag override — high contrast on light bg */
 .ana__tag {
-  color: var(--color-accent);
-  background: rgba(245, 197, 24, 0.1);
-  border-color: rgba(245, 197, 24, 0.18);
+  color: #7a5c00 !important;
+  background: rgba(245,197,24,0.16) !important;
+  border-color: rgba(245,197,24,0.35) !important;
 }
 
 .ana__title {
-  font-size: clamp(28px, 4vw, 52px);
+  font-size: clamp(30px, 4vw, 52px);
   font-weight: 800;
-  color: var(--color-text-primary);
+  color: #0d0d0d;          /* WCAG AAA: 18.1:1 on #f0f3f8 */
   line-height: 1.15;
-  margin-bottom: 16px;
+  margin: 20px 0 16px;
+  letter-spacing: -0.02em;
 }
 
-.ana__br { display: inline; }
+.ana__title-accent {
+  /* dark amber — 6.8:1 on #f0f3f8 — passes WCAG AA for large text */
+  background: linear-gradient(135deg, #d48800 0%, #b85e00 60%, #c47a00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
 .ana__subtitle {
-  font-size: 16px;
-  color: var(--color-text-secondary);
-  line-height: 1.65;
-  max-width: 1920px;
-  margin-bottom: 32px;
-}
-
-.ana__texts {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  padding-top: 24px;
-  border-top: 1px solid var(--color-border);
-}
-
-.ana__body-text {
-  font-size: 0.875rem;
-  line-height: 1.72;
-  color: var(--color-text-muted);
+  font-size: 1.0625rem;
+  color: #3d3d3d;           /* 8.6:1 on #f0f3f8 — WCAG AAA */
+  line-height: 1.7;
+  margin: 0;
 }
 
 /* ============================================================
-   2-column body
+   Orbital stage
    ============================================================ */
-.ana__body {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 60px;
-  align-items: start;
-}
-
-/* ============================================================
-   Left — Tab panel
-   ============================================================ */
-.ana__panel {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  position: sticky;
-  top: 92px;
-}
-
-.ana__panel-heading {
-  font-size: 0.67rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  padding: 0 8px;
-  margin-bottom: 10px;
-}
-
-.ana__tab {
+.ana__stage {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 11px;
-  padding: 10px 10px;
-  border-radius: 11px;
-  text-align: left;
-  cursor: pointer;
-  border: 1px solid transparent;
-  background: transparent;
-  overflow: hidden;
-  transition: background 0.22s ease, border-color 0.22s ease;
+  justify-content: center;
+  min-height: 640px;
 }
 
-/* Left accent bar */
-.ana__tab::before {
+/* ── Rings ────────────────────────────────────────────────── */
+.ana__rings {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ana__ring {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.ana__ring--1 {
+  width: 360px; height: 360px;
+  border: 1.5px solid rgba(200,155,0,0.35);
+  box-shadow: 0 0 0 1px rgba(200,155,0,0.08) inset;
+  animation: anaRingPulse 5s ease-in-out infinite;
+}
+
+.ana__ring--2 {
+  width: 560px; height: 560px;
+  border: 1px dashed rgba(120,175,30,0.28);
+  animation: anaRingPulse 5s ease-in-out infinite 1s;
+}
+
+.ana__ring--3 {
+  width: 760px; height: 760px;
+  border: 1px solid rgba(200,155,0,0.13);
+  animation: anaRingPulse 5s ease-in-out infinite 2s;
+}
+
+@keyframes anaRingPulse {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50%       { opacity: 1;    transform: scale(1.018); }
+}
+
+/* ── Center video ─────────────────────────────────────────── */
+.ana__center {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.ana__video-frame {
+  position: relative;
+  width: clamp(380px, 38vw, 560px);
+  border-radius: 18px;
+  overflow: hidden;
+  background: #dde1ea;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.7) inset,
+    0 2px 8px rgba(0,0,0,0.06),
+    0 8px 24px rgba(0,0,0,0.09),
+    0 28px 64px rgba(0,0,0,0.13),
+    0 0 100px rgba(200,155,0,0.12);
+  cursor: pointer;
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+.ana__video-frame:hover {
+  box-shadow:
+    0 0 0 2px rgba(200,155,0,0.4),
+    0 0 0 1px rgba(255,255,255,0.7) inset,
+    0 4px 16px rgba(0,0,0,0.1),
+    0 20px 56px rgba(0,0,0,0.15),
+    0 0 120px rgba(200,155,0,0.18);
+  transform: translateY(-5px) scale(1.012);
+}
+
+.ana__video-frame::before {
   content: '';
   position: absolute;
-  left: 0; top: 0;
-  width: 3px; height: 100%;
-  background: var(--tc, #f5c518);
-  transform: scaleY(0);
-  transform-origin: top center;
-  border-radius: 0 2px 2px 0;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.ana__tab.is-active::before {
-  transform: scaleY(1);
-}
-
-.ana__tab:hover:not(.is-active) {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.ana__tab.is-active {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.09);
-}
-
-.ana__tab-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 33px; height: 33px;
-  border-radius: 9px;
-  flex-shrink: 0;
-  transition: background 0.22s ease;
-}
-
-.ana__tab-body {
-  flex: 1;
-  min-width: 0;
-}
-
-.ana__tab-title {
-  font-size: 0.81rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.4);
-  line-height: 1.3;
-  margin: 0;
-  transition: color 0.2s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ana__tab.is-active .ana__tab-title {
-  color: var(--color-text-primary);
-  font-weight: 700;
-}
-
-.ana__tab-desc {
-  font-size: 0.71rem;
-  color: rgba(255, 255, 255, 0.36);
-  line-height: 1.5;
-  margin: 0;
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition:
-    max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity    0.22s ease,
-    margin-top 0.22s ease;
-}
-
-.ana__tab.is-active .ana__tab-desc {
-  max-height: 60px;
-  opacity: 1;
-  margin-top: 3px;
-}
-
-.ana__tab-chevron {
-  flex-shrink: 0;
-  color: rgba(255, 255, 255, 0.15);
-  transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.ana__tab.is-active .ana__tab-chevron {
-  color: var(--tc, #f5c518);
-  transform: translateX(2px);
-}
-
-/* ============================================================
-   Right — Mockup
-   ============================================================ */
-.ana__mockup-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.ana__mockup {
-  width: 100%;
-  border-radius: 14px;
-  background: #111111;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.35),
-    0 4px 14px rgba(0, 0, 0, 0.35),
-    0 16px 52px rgba(0, 0, 0, 0.45),
-    0 40px 80px rgba(0, 0, 0, 0.3);
-}
-
-/* ── Browser chrome ──────────────────────────────────────── */
-.ana__chrome {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 13px;
-  background: #1a1a1a;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  height: 40px;
-  flex-shrink: 0;
-}
-
-.ana__chrome-dots { display: flex; gap: 5px; flex-shrink: 0; }
-
-.ana__dot {
-  display: block;
-  width: 10px; height: 10px;
-  border-radius: 50%;
-}
-.ana__dot--red    { background: #FF5F57; }
-.ana__dot--yellow { background: #FEBC2E; }
-.ana__dot--green  { background: #28C840; }
-
-.ana__chrome-bar {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 6px;
-  padding: 4px 10px;
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.22);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ana__chrome-actions { display: flex; gap: 6px; flex-shrink: 0; }
-.ana__chrome-actions span {
-  display: block;
-  width: 17px; height: 17px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.07);
-}
-
-/* ── Dashboard shell ─────────────────────────────────────── */
-.ana__dash {
-  display: flex;
-  height: 420px;
-  background: #0d0d0d;
-}
-
-/* Sidebar */
-.ana__dash-sb {
-  width: 54px;
-  background: #111111;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 12px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex-shrink: 0;
-}
-
-.ana__dash-sb-logo {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 14px;
-}
-
-.ana__dash-sb-logo-dot {
-  width: 22px; height: 22px;
-  border-radius: 7px;
-  transition: background 0.4s ease;
-}
-
-.ana__dash-sb-nav { display: flex; flex-direction: column; gap: 3px; }
-
-.ana__dash-sb-item {
-  display: flex;
-  justify-content: center;
-  padding: 7px;
-  border-radius: 8px;
-  transition: background 0.2s ease;
-}
-
-.ana__dash-sb-icon {
-  width: 14px; height: 14px;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.1);
-  transition: background 0.4s ease;
-}
-
-/* Main panel */
-.ana__dash-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-width: 0;
-}
-
-/* Topbar */
-.ana__dash-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 9px 13px;
-  background: #111111;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  flex-shrink: 0;
-  gap: 12px;
-}
-
-.ana__dash-topbar-left { display: flex; flex-direction: column; gap: 4px; }
-
-.ana__dash-topbar-title {
-  height: 9px; width: 84px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.11);
-}
-
-.ana__dash-topbar-sub {
-  height: 6px; width: 52px;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.ana__dash-topbar-right { display: flex; align-items: center; gap: 7px; }
-
-.ana__dash-search {
-  width: 84px; height: 21px;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.ana__dash-avatar {
-  width: 24px; height: 24px;
-  border-radius: 50%;
-  transition: background 0.4s ease;
-}
-
-/* KPI mini-row */
-.ana__kpi-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  padding: 8px 12px;
-  flex-shrink: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-.ana__kpi-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
-  padding: 8px 10px;
-  transition: background 0.4s ease, border-color 0.4s ease;
-}
-
-.ana__kpi-lbl {
-  height: 6px;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.1);
-  margin-bottom: 6px;
-}
-
-.ana__kpi-val {
-  height: 10px; width: 60%;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.13);
-  margin-bottom: 5px;
-  transition: background 0.4s ease;
-}
-
-.ana__kpi-pct {
-  height: 5px; width: 38%;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.06);
-}
-
-/* ── Dynamic chart area ──────────────────────────────────── */
-.ana__chart-area {
-  flex: 1;
-  position: relative;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.ana__chart-slot {
-  position: absolute;
-  inset: 0;
-  display: none; /* GSAP controls display */
-  padding: 14px;
-  overflow: hidden;
-}
-
-/* ============================================================
-   Chart — shared base
-   ============================================================ */
-.ana-chart {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.ana-chart__title {
-  font-size: 0.67rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
-  margin-bottom: 10px;
-  flex-shrink: 0;
-}
-
-/* ============================================================
-   Chart 0 — Donut
-   ============================================================ */
-.ana-chart--donut {
-  flex-direction: row;
-  align-items: center;
-  gap: 20px;
-}
-
-.ana-donut-wrap {
-  position: relative;
-  width: 112px; height: 112px;
-  flex-shrink: 0;
-}
-
-.ana-donut-svg {
-  width: 112px; height: 112px;
-  display: block;
-}
-
-.ana-donut-center {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 10%, rgba(255,255,255,0.9) 50%, transparent 90%);
+  z-index: 10;
   pointer-events: none;
 }
 
-.ana-donut-pct {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--color-text-primary);
-  line-height: 1;
-}
-
-.ana-donut-sub {
-  font-size: 0.6rem;
-  color: rgba(255, 255, 255, 0.42);
-}
-
-.ana-donut-legend {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 9px;
-  list-style: none;
-  min-width: 0;
-}
-
-.ana-legend-item {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.ana-legend-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.ana-legend-name {
-  flex: 1;
-  font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.55);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ana-legend-val {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--color-text-primary);
-  flex-shrink: 0;
-}
-
-/* ============================================================
-   Chart 1 — Horizontal bars
-   ============================================================ */
-.ana-chart--hbar { gap: 0; }
-
-.ana-hbar-list {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.ana-hbar-row {
+/* browser chrome — macOS light */
+.ana__video-chrome {
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, #e4e7ef 0%, #d8dce6 100%);
+  border-bottom: 1px solid rgba(0,0,0,0.12);
+  flex-shrink: 0;
 }
 
-.ana-hbar-label {
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.52);
-  width: 54px;
-  flex-shrink: 0;
+.ana__video-chrome-dots { display: flex; gap: 5px; }
+
+.ana__vdot { display: block; width: 10px; height: 10px; border-radius: 50%; }
+.ana__vdot--r { background: #FF5F57; }
+.ana__vdot--y { background: #FEBC2E; }
+.ana__vdot--g { background: #28C840; }
+
+.ana__video-chrome-bar {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 5px;
+  padding: 3px 9px;
+  font-size: 9.5px;
+  color: rgba(0,0,0,0.45);    /* 9.4:1 */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.ana-hbar-track {
-  flex: 1;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.07);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.ana-hbar-fill {
-  height: 100%;
-  border-radius: 4px;
-  opacity: 0.78;
-  /* width set inline; scaleX animated by GSAP */
-}
-
-.ana-hbar-pct {
-  font-size: 0.67rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.5);
-  width: 26px;
-  text-align: right;
-  flex-shrink: 0;
-}
-
-/* ============================================================
-   Chart 2 — Ranking list
-   ============================================================ */
-.ana-chart--ranking { gap: 0; }
-
-.ana-rank-list {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.ana-rank-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-.ana-rank-row:last-child { border-bottom: none; }
-
-.ana-rank-num {
-  font-size: 0.68rem;
-  font-weight: 800;
-  width: 20px;
-  flex-shrink: 0;
-  text-align: right;
-}
-
-.ana-rank-avatar {
-  width: 22px; height: 22px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  opacity: 0.85;
-}
-
-.ana-rank-name {
-  flex: 1;
-  font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.7);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ana-rank-val {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--color-text-primary);
-  flex-shrink: 0;
-}
-
-/* ============================================================
-   Chart 3 — Line chart
-   ============================================================ */
-.ana-chart--line { gap: 0; }
-
-.ana-line-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 6px;
-  flex-shrink: 0;
-}
-
-.ana-line-header .ana-chart__title { margin-bottom: 0; }
-
-.ana-line-legend { display: flex; gap: 12px; }
-
-.ana-line-leg {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.64rem;
-  color: rgba(255, 255, 255, 0.4);
 }
 
-.ana-line-leg-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  display: inline-block;
-  flex-shrink: 0;
+.ana__video-chrome-actions { display: flex; gap: 5px; }
+.ana__video-chrome-actions span {
+  display: block; width: 15px; height: 15px;
+  border-radius: 3px;
+  background: rgba(0,0,0,0.1);
 }
 
-.ana-line-svg-wrap {
-  flex: 1;
-  min-height: 0;
-}
-
-.ana-line-svg {
+/* video */
+.ana__video {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
   display: block;
 }
 
-/* ============================================================
-   Chart 4 — Stat cards
-   ============================================================ */
-.ana-chart--stats { gap: 0; }
-
-.ana-stats-grid {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  align-content: start;
-}
-
-.ana-stat-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  padding: 10px 11px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.ana-stat-label {
-  font-size: 0.64rem;
-  color: rgba(255, 255, 255, 0.38);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ana-stat-val {
-  font-size: 0.92rem;
-  font-weight: 800;
-  color: var(--color-text-primary);
-  line-height: 1.2;
-}
-
-.ana-stat-trend {
-  font-size: 0.62rem;
-  font-weight: 600;
-  color: var(--tc, #f5c518);
-}
-
-/* ============================================================
-   Chart 5 — Progress bars
-   ============================================================ */
-.ana-chart--progress { gap: 0; }
-
-.ana-prog-list {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.ana-prog-row {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.ana-prog-header {
+/* play overlay */
+.ana__video-overlay {
+  position: absolute;
+  inset: 38px 0 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  background: rgba(0,0,0,0.18);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  pointer-events: none;
 }
 
-.ana-prog-label {
-  font-size: 0.68rem;
-  color: rgba(255, 255, 255, 0.52);
+.ana__video-frame:hover .ana__video-overlay { opacity: 1; }
+
+.ana__video-play {
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  background: rgba(220,165,0,0.96);
+  border: 1.5px solid rgba(255,255,255,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 24px rgba(200,140,0,0.5), 0 0 0 8px rgba(220,165,0,0.12);
+  transform: scale(0.88);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.ana-prog-pct {
-  font-size: 0.68rem;
-  font-weight: 700;
+.ana__video-frame:hover .ana__video-play { transform: scale(1); }
+
+/* caption */
+.ana__video-caption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.75);
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1a1a1a;            /* 16.7:1 — WCAG AAA */
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.9) inset,
+    0 2px 12px rgba(0,0,0,0.09),
+    0 6px 24px rgba(0,0,0,0.06);
+  letter-spacing: 0.01em;
 }
 
-.ana-prog-track {
-  height: 5px;
-  background: rgba(255, 255, 255, 0.07);
-  border-radius: 4px;
-  overflow: hidden;
+.ana__video-caption-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #5a9e1a;       /* darker green — 4.8:1 on white */
+  flex-shrink: 0;
+  animation: anaCapPulse 2.2s ease-in-out infinite;
 }
 
-.ana-prog-fill {
-  height: 100%;
-  border-radius: 4px;
-  opacity: 0.82;
-  /* width set inline; scaleX animated by GSAP */
+@keyframes anaCapPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(90,158,26,0.55); }
+  50%       { box-shadow: 0 0 0 6px rgba(90,158,26,0); }
 }
 
 /* ============================================================
-   Chart 6 — Bubble chart
+   Feature cards
    ============================================================ */
-.ana-chart--bubble { gap: 0; }
-
-.ana-bubble-area {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.ana-bubble-grid-svg {
+.ana__cards {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
   pointer-events: none;
+  z-index: 3;
 }
 
-.ana-bubble {
+.ana__card {
   position: absolute;
+  pointer-events: all;
+  width: 240px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 20px;
+  padding: 20px 20px 18px;
+  cursor: pointer;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.9) inset,
+    0 2px 6px rgba(0,0,0,0.04),
+    0 8px 24px rgba(0,0,0,0.07),
+    0 20px 48px rgba(0,0,0,0.06);
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.ana__card:hover {
+  border-color: rgba(255,255,255,0.85);
+  transform: translateY(-7px) scale(1.03) !important;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.9) inset,
+    0 4px 12px rgba(0,0,0,0.07),
+    0 16px 48px rgba(0,0,0,0.11),
+    0 28px 72px rgba(0,0,0,0.08);
+}
+
+.ana__card.is-active {
+  border-color: color-mix(in srgb, var(--cc, #c47a00) 45%, transparent);
+  background: rgba(255,255,255,0.96);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--cc, #c47a00) 14%, transparent),
+    0 1px 0 rgba(255,255,255,0.9) inset,
+    0 4px 16px rgba(0,0,0,0.08),
+    0 16px 48px rgba(0,0,0,0.1),
+    0 0 40px color-mix(in srgb, var(--cc, #c47a00) 12%, transparent);
+}
+
+/* positions */
+.ana__card--tl {
+  top:    8%;
+  left:   calc(50% - 560px / 2 - 120px);
+  transform: translate(-30%, 0);
+}
+.ana__card--tr {
+  top:    8%;
+  right:  calc(50% - 560px / 2 - 120px);
+  transform: translate(30%, 0);
+}
+.ana__card--bl {
+  bottom: 8%;
+  left:   calc(50% - 560px / 2 - 120px);
+  transform: translate(-30%, 0);
+}
+.ana__card--br {
+  bottom: 8%;
+  right:  calc(50% - 560px / 2 - 120px);
+  transform: translate(30%, 0);
+}
+/* connector dot */
+.ana__card-connector {
+  position: absolute;
+  width: 8px; height: 8px;
   border-radius: 50%;
+  background: var(--cc, #c47a00);
+  opacity: 0.5;
+  transition: opacity 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cc, #c47a00) 20%, transparent);
+}
+
+.ana__card--tl .ana__card-connector { bottom: -4px; right:  -4px; }
+.ana__card--tr .ana__card-connector { bottom: -4px; left:   -4px; }
+.ana__card--bl .ana__card-connector { top:    -4px; right:  -4px; }
+.ana__card--br .ana__card-connector { top:    -4px; left:   -4px; }
+
+.ana__card:hover .ana__card-connector,
+.ana__card.is-active .ana__card-connector {
+  opacity: 1;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--cc, #c47a00) 22%, transparent),
+              0 0 12px color-mix(in srgb, var(--cc, #c47a00) 40%, transparent);
+}
+
+/* icon */
+.ana__card-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translate(-50%, -50%);
-  will-change: transform, opacity;
+  margin-bottom: 14px;
+  border: 1px solid color-mix(in srgb, var(--cc, #c47a00) 20%, transparent);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
-.ana-bubble-label {
-  font-size: 0.58rem;
-  font-weight: 700;
-  text-align: center;
-  line-height: 1.2;
-  white-space: nowrap;
-  pointer-events: none;
+.ana__card.is-active .ana__card-icon,
+.ana__card:hover .ana__card-icon {
+  border-color: color-mix(in srgb, var(--cc, #c47a00) 35%, transparent);
 }
+
+/* card text — explicit high-contrast values */
+.ana__card-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #111111;            /* 16.1:1 on white — WCAG AAA */
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.ana__card-desc {
+  font-size: 0.76rem;
+  color: #4a4a4a;            /* 7.8:1 on white — WCAG AAA */
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* active strip */
+.ana__card-strip {
+  position: absolute;
+  top: 0; left: 16px; right: 16px;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--cc, #c47a00) 70%, transparent), var(--cc, #c47a00), color-mix(in srgb, var(--cc, #c47a00) 70%, transparent));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 1px 8px color-mix(in srgb, var(--cc, #c47a00) 50%, transparent);
+}
+
+.ana__card.is-active .ana__card-strip { transform: scaleX(1); }
 
 /* ============================================================
-   Mockup footer caption
+   Connector lines
    ============================================================ */
-.ana__mockup-footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+.ana__connectors {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.ana__mockup-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  transition: background 0.35s ease;
+.ana__connector-line {
+  stroke-dasharray: 4 8;
+  stroke-linecap: round;
+  opacity: 0.32;
+  animation: anaLineDash 2.8s linear infinite;
 }
 
-.ana__mockup-label {
-  font-size: 0.74rem;
-  font-weight: 600;
-  transition: color 0.35s ease;
+@keyframes anaLineDash {
+  to { stroke-dashoffset: -48; }
 }
 
 /* ============================================================
    Responsive
    ============================================================ */
-@media (max-width: 1100px) {
-  .ana__body {
-    grid-template-columns: 268px 1fr;
-    gap: 48px;
-  }
+@media (max-width: 1200px) {
+  .ana__card--tl { left: 0; transform: translate(0, 0); }
+  .ana__card--tr { right: 0; transform: translate(0, 0); }
+  .ana__card--bl { left: 0; transform: translate(0, 0); }
+  .ana__card--br { right: 0; transform: translate(0, 0); }
+  .ana__ring--3  { width: 640px; height: 640px; }
+  .ana__stage    { min-height: 720px; }
 }
 
-@media (max-width: 860px) {
-  .ana {
-    padding: 88px 0 104px;
+@media (max-width: 960px) {
+  .ana__stage {
+    min-height: unset;
+    flex-direction: column;
+    gap: 24px;
   }
+  .ana__rings      { display: none; }
+  .ana__connectors { display: none; }
+  .ana__stripe     { display: none; }
 
-  .ana__body {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .ana__panel {
+  .ana__cards {
     position: static;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 4px;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    pointer-events: all;
+    width: 100%;
   }
 
-  .ana__panel-heading {
-    grid-column: 1 / -1;
+  .ana__card {
+    position: static;
+    width: auto;
+    transform: none !important;
   }
 
-  .ana__mockup-wrap {
-    order: -1;
-  }
+  .ana__card-connector { display: none; }
 
-  .ana__texts {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .ana__dash {
-    height: 360px;
+  .ana__video-frame {
+    width: 100%;
+    max-width: 540px;
   }
 }
 
-@media (max-width: 600px) {
-  .ana {
-    padding: 72px 0 88px;
-  }
-
-  .ana__header {
-    margin-bottom: 48px;
-  }
-
-  .ana__panel {
-    grid-template-columns: 1fr;
-  }
-
-  .ana__br { display: none; }
-
-  .ana__dash {
-    height: 320px;
-  }
-
-  .ana__dash-sb {
-    width: 44px;
-    padding: 10px 6px;
-  }
-
-  .ana__dash-search,
-  .ana__chrome-actions {
-    display: none;
-  }
-
-  .ana__kpi-row {
-    padding: 6px 10px;
-    gap: 5px;
-  }
-
-  .ana-stats-grid {
-    gap: 6px;
-  }
+@media (max-width: 560px) {
+  .ana { padding: 80px 0 100px; }
+  .ana__header { margin-bottom: 48px; }
+  .ana__corner { display: none; }
+  .ana__cards  { grid-template-columns: 1fr; }
+  .ana__video-frame { max-width: 100%; }
+  .ana__video-chrome-actions { display: none; }
 }

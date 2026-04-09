@@ -53,7 +53,6 @@ function getRoleProps(role, dir = 1) {
   }
 }
 
-/* ── Phone screen placeholder ── */
 function PhoneScreen({ slide }) {
   return (
     <div className="acs__placeholder" style={{ '--accent': slide.accent }}>
@@ -134,7 +133,6 @@ export default function AppShowcase() {
 
     fns.current = { goTo, startProgress }
 
-    /* Init phone positions */
     phoneRefs.current.forEach((el, i) => {
       if (!el) return
       const role = getRole(i, 0)
@@ -183,7 +181,6 @@ export default function AppShowcase() {
 
         <div className="acs__body">
 
-          {/* ── LEFT: phone carousel ── */}
           <div className="acs__visual">
             <div className="acs__deck">
               {SLIDES.map((s, i) => (
@@ -211,7 +208,6 @@ export default function AppShowcase() {
             </div>
           </div>
 
-          {/* ── RIGHT: text + controls ── */}
           <div className="acs__info">
             <div className="acs__text" ref={textRef}>
               <span

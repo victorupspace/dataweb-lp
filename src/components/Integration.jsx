@@ -413,7 +413,7 @@ export default function Integration() {
   }
 
   return (
-    <section className="section section--light itg" id="plataforma" ref={sectionRef}>
+    <section className="section section--dark itg" id="plataforma" ref={sectionRef}>
 
       <div className="itg__blobs" aria-hidden="true">
         <div ref={blob1Ref} className="itg__blob itg__blob--1" />
@@ -458,11 +458,11 @@ export default function Integration() {
 
                 <div
                   className="itg__tab-icon"
-                  style={{ background: i === active ? `${s.color}18` : 'rgba(0,0,0,0.04)' }}
+                  style={{ background: i === active ? `${s.color}22` : 'rgba(255,255,255,0.06)' }}
                 >
                   <Icon
                     name={s.icon}
-                    color={i === active ? s.color : 'rgba(0,0,0,0.3)'}
+                    color={i === active ? s.color : 'rgba(255,255,255,0.28)'}
                   />
                 </div>
 

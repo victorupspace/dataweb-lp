@@ -11,7 +11,6 @@ const metrics = [
 const logos = ['Essilor.png', 'Zeiss.png', 'Diniz.png']
 const tickerItems = [...logos, ...logos, ...logos, ...logos, ...logos, ...logos]
 
-/* Partículas geradas uma vez */
 const PARTICLES = Array.from({ length: 28 }, (_, i) => ({
   id: i,
   size:  2 + Math.random() * 3,
@@ -38,48 +37,40 @@ export default function Hero() {
 
   const [panelHovered, setPanelHovered] = useState(false)
 
-  /* ── Master entrance timeline ── */
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.2 })
 
-      /* eyebrow pop */
       tl.fromTo(eyebrowRef.current,
         { y: 20, opacity: 0, scale: 0.9 },
         { y: 0, opacity: 1, scale: 1, duration: 0.55, ease: 'back.out(2)' }
       )
-      /* title lines stagger */
       .fromTo(titleRef.current?.querySelectorAll('.hero__title-line'),
         { y: 48, opacity: 0, skewY: 3 },
         { y: 0, opacity: 1, skewY: 0, duration: 0.65, stagger: 0.12, ease: 'power3.out' },
         '-=0.25'
       )
-      /* subtitle */
       .fromTo(subtitleRef.current,
         { y: 20, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' },
         '-=0.3'
       )
-      /* trust pills */
       .fromTo(trustRef.current?.querySelectorAll('.hero__trust-item, .hero__trust-sep'),
         { y: 12, opacity: 0, scale: 0.85 },
         { y: 0, opacity: 1, scale: 1, duration: 0.4, stagger: 0.06, ease: 'back.out(1.7)' },
         '-=0.25'
       )
-      /* CTA buttons */
       .fromTo(actionsRef.current?.querySelectorAll('a'),
         { y: 16, opacity: 0, scale: 0.9 },
         { y: 0, opacity: 1, scale: 1, duration: 0.45, stagger: 0.1, ease: 'back.out(2)' },
         '-=0.2'
       )
-      /* panel slides in from right */
       .fromTo(panelRef.current,
         { x: 60, opacity: 0 },
         { x: 0, opacity: 1, duration: 0.7, ease: 'power3.out' },
         '-=0.6'
       )
 
-      /* chart path draw-on */
       setTimeout(() => {
         const path = chartPathRef.current
         if (!path) return
@@ -95,7 +86,6 @@ export default function Hero() {
     return () => ctx.revert()
   }, [])
 
-  /* ── Metric counters ── */
   useEffect(() => {
     const targets = [25, 100, 5000, 92]
     const formats = [
@@ -116,7 +106,6 @@ export default function Hero() {
       })
     })
 
-    /* highlight +40% count-up */
     if (hlValueRef.current) {
       const obj = { val: 0 }
       gsap.to(obj, {
@@ -132,7 +121,6 @@ export default function Hero() {
     }
   }, [])
 
-  /* ── Logo ticker ── */
   useEffect(() => {
     requestAnimationFrame(() => {
       const track = tickerRef.current
@@ -149,7 +137,6 @@ export default function Hero() {
     return () => { tween.current?.kill() }
   }, [])
 
-  /* ── Panel tilt on mouse move ── */
   const handlePanelMove = (e) => {
     if (!panelRef.current) return
     const rect = panelRef.current.getBoundingClientRect()
@@ -171,7 +158,6 @@ export default function Hero() {
     setPanelHovered(false)
   }
 
-  /* ── Button ripple ── */
   const handleBtnClick = (e) => {
     const btn = e.currentTarget
     const ripple = document.createElement('span')
@@ -186,7 +172,6 @@ export default function Hero() {
   return (
     <section className="hero" id="hero" ref={heroRef}>
 
-      {/* ── Background video ── */}
       <div className="hero__bg">
         <video className="hero__video" autoPlay loop muted playsInline>
           <source src="/assets/rocket04.mov" type="video/mp4" />
@@ -194,7 +179,6 @@ export default function Hero() {
         <div className="hero__overlay" />
       </div>
 
-      {/* ── Floating particles ── */}
       <div className="hero__particles" aria-hidden="true">
         {PARTICLES.map((p) => (
           <span
@@ -213,10 +197,8 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* ── Main two-column layout ── */}
       <div className="container hero__container">
 
-        {/* Left — copy */}
         <div className="hero__left">
 
           <div className="hero__eyebrow" ref={eyebrowRef}>
@@ -293,7 +275,6 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right — metrics panel */}
         <div
           className={`hero__panel${panelHovered ? ' hero__panel--hovered' : ''}`}
           ref={panelRef}
@@ -302,7 +283,6 @@ export default function Hero() {
           onMouseLeave={handlePanelLeave}
           aria-hidden="true"
         >
-          {/* Panel header */}
           <div className="hero__panel-header">
             <div className="hero__panel-badge">
               <span className="hero__panel-badge-dot" />
@@ -313,7 +293,6 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* KPI highlight */}
           <div className="hero__panel-highlight">
             <div className="hero__panel-hl-left">
               <span className="hero__panel-hl-label">Crescimento médio pós-implantação</span>
@@ -332,12 +311,10 @@ export default function Hero() {
                     <stop offset="100%" stopColor="#FF9C4B" stopOpacity="0"/>
                   </linearGradient>
                 </defs>
-                {/* area fill */}
                 <polygon
                   points="0,46 18,36 36,38 54,22 72,12 90,4 90,50 0,50"
                   fill="url(#ag)"
                 />
-                {/* line */}
                 <polyline
                   ref={chartPathRef}
                   points="0,46 18,36 36,38 54,22 72,12 90,4"
@@ -346,7 +323,6 @@ export default function Hero() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-                {/* endpoint glow dot */}
                 <circle cx="90" cy="4" r="3.5" fill="#f5c518">
                   <animate attributeName="r" values="3.5;5;3.5" dur="2s" repeatCount="indefinite"/>
                   <animate attributeName="opacity" values="1;0.6;1" dur="2s" repeatCount="indefinite"/>
@@ -355,7 +331,6 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* 2×2 metrics */}
           <div className="hero__panel-grid">
             {metrics.map((m, i) => (
               <div className="hero__panel-metric" key={i}>
@@ -370,7 +345,6 @@ export default function Hero() {
             ))}
           </div>
 
-          {/* Footer */}
           <div className="hero__panel-footer">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <circle cx="7" cy="7" r="6" stroke="#4ade80" strokeWidth="1.1"/>
@@ -382,7 +356,6 @@ export default function Hero() {
 
       </div>
 
-      {/* ── Logo ticker ── */}
       <div className="hero__ticker-bar" aria-hidden="true">
         <span className="hero__ticker-label">Parceiros de referência</span>
         <div className="hero__ticker-viewport">
