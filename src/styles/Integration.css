@@ -33,7 +33,6 @@
 .itg__blob {
   position: absolute;
   border-radius: 50%;
-  will-change: transform;
 }
 
 .itg__blob--1 {
@@ -87,27 +86,59 @@
 }
 
 /* ── Section header ───────────────────────────────────────── */
-.itg .section__header {
-  margin-bottom: 64px;
+.itg__header {
+  position: relative;
+  margin-bottom: 72px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
 }
 
-.itg .section__tag {
-  color: rgba(255,255,255,0.55);
-  background: rgba(255,255,255,0.07);
-  border-color: rgba(255,255,255,0.12);
+.itg__header-content {
+  max-width: 560px;
 }
 
-.itg .section__title {
-  font-size: clamp(28px, 3.2vw, 44px);
-  color: #ffffff;
-  margin-bottom: 12px;
-  letter-spacing: -0.02em;
+.itg__htag {
+  color: rgba(255,255,255,0.55) !important;
+  background: rgba(255,255,255,0.07) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+  margin-bottom: 16px;
 }
 
-.itg .section__subtitle {
-  font-size: 1.0625rem;
-  color: rgba(255,255,255,0.48);
+.itg__htitle {
+  font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 800;
+  color: rgba(255,255,255,0.92);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin: 14px 0 14px;
+}
+
+.itg__htitle-em {
+  font-style: normal;
+  background: linear-gradient(120deg, #6C63FF, #a78bfa 50%, #6C63FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% auto;
+}
+
+.itg__hword {
+  display: inline-block;
+}
+
+.itg__hsub {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.45);
   line-height: 1.7;
+  max-width: 420px;
+  margin: 0;
+}
+
+@media (max-width: 680px) {
+  .itg__header {
+    margin-bottom: 48px;
+    padding-bottom: 28px;
+  }
 }
 
 /* ============================================================
@@ -241,22 +272,22 @@
 
 .itg__tab-desc {
   font-size: 0.78rem;
-  color: rgba(255,255,255,0.5);
   line-height: 1.6;
-  margin-top: 0;
-  max-height: 0;
+  margin-top: 6px;
+  /* Ocupa espaço sempre — só muda a cor */
+  color: transparent;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  opacity: 0;
-  transition:
-    max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity    0.25s ease,
-    margin-top 0.25s ease;
+  transition: color 0.25s ease;
+  /* user-select none para não selecionar texto invisível */
+  user-select: none;
 }
 
 .itg__tab.is-active .itg__tab-desc {
-  max-height: 90px;
-  opacity: 1;
-  margin-top: 6px;
+  color: rgba(255,255,255,0.5);
+  user-select: text;
 }
 
 /* ============================================================

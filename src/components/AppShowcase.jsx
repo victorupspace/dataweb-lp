@@ -1,5 +1,8 @@
 import { useRef, useEffect, useState } from 'react'
 import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const SLIDES = [
   {
@@ -80,6 +83,8 @@ export default function AppShowcase() {
   const animating    = useRef(false)
   const progressTween = useRef(null)
   const fns          = useRef({ goTo: null, startProgress: null })
+  const headerRef    = useRef(null)
+  const sectionRef   = useRef(null)
 
   useEffect(() => {
     function startProgress() {
@@ -133,6 +138,37 @@ export default function AppShowcase() {
 
     fns.current = { goTo, startProgress }
 
+    /* ── Header split-word entrance ── */
+    if (headerRef.current) {
+      const words = headerRef.current.querySelectorAll('.acs__hword')
+      const sub   = headerRef.current.querySelector('.acs__hsub')
+      const tag   = headerRef.current.querySelector('.acs__htag')
+      const line  = headerRef.current.querySelector('.acs__hline')
+
+      gsap.set(tag,   { autoAlpha: 0, y: 10 })
+      gsap.set(words, { autoAlpha: 0 })
+      gsap.set(sub,   { autoAlpha: 0, y: 16 })
+      gsap.set(line,  { autoAlpha: 1, scaleX: 0, transformOrigin: 'left center' })
+
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top 70%',
+        once: true,
+        onEnter() {
+          const tl = gsap.timeline()
+          tl.to(tag, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0)
+          tl.fromTo(words,
+            { y: '105%', autoAlpha: 0 },
+            { y: '0%', autoAlpha: 1, duration: 0.7, stagger: 0.06, ease: 'power4.out', clearProps: 'transform' },
+            0.1
+          )
+          tl.to(line, { scaleX: 1, duration: 0.85, ease: 'power3.out', clearProps: 'transform' }, 0.35)
+          tl.to(sub,  { autoAlpha: 1, y: 0, duration: 0.55, ease: 'power3.out', clearProps: 'transform' }, 0.45)
+        },
+      })
+    }
+
+    /* ── Phone setup ── */
     phoneRefs.current.forEach((el, i) => {
       if (!el) return
       const role = getRole(i, 0)
@@ -144,7 +180,7 @@ export default function AppShowcase() {
     })
 
     startProgress()
-    return () => progressTween.current?.kill()
+    return () => { progressTween.current?.kill() }
   }, [])
 
   function handleNav(dir) {
@@ -160,11 +196,12 @@ export default function AppShowcase() {
   const slide = SLIDES[displayIdx]
 
   return (
-    <section className="section app-showcase section--light" id="about">
+    <section className="section app-showcase section--light" id="about" ref={sectionRef}>
       <div className="container">
 
-        <div className="section__header">
-          <span className="section__tag">
+        {/* ── Header: left-aligned split-word with accent line ── */}
+        <div className="acs__header" ref={headerRef}>
+          <span className="section__tag acs__htag">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <rect x="1" y="1" width="4" height="4" rx="1" fill="currentColor"/>
               <rect x="7" y="1" width="4" height="4" rx="1" fill="currentColor" opacity="0.5"/>
@@ -173,8 +210,21 @@ export default function AppShowcase() {
             </svg>
             Aplicativo
           </span>
-          <h2 className="section__title">Sua ótica na palma da mão</h2>
-          <p className="section__subtitle">
+          <h2 className="acs__htitle">
+            {'Sua ótica na'.split(' ').map((w, i) => (
+              <span key={i} className="acs__hword-wrap">
+                <span className="acs__hword">{w}&nbsp;</span>
+              </span>
+            ))}
+            <br/>
+            {'palma da mão.'.split(' ').map((w, i) => (
+              <span key={i} className="acs__hword-wrap">
+                <span className="acs__hword">{w}&nbsp;</span>
+              </span>
+            ))}
+          </h2>
+          <div className="acs__hline" />
+          <p className="acs__hsub">
             Monitore métricas de vendas, clientes e estoque em tempo real, direto do seu smartphone.
           </p>
         </div>

@@ -27,7 +27,6 @@
 .ana__blob {
   position: absolute;
   border-radius: 50%;
-  will-change: transform;
 }
 
 /* Yellow/amber — top left */
@@ -132,43 +131,121 @@
 }
 
 /* ============================================================
-   Header
+   Header — split layout + stats counter
    ============================================================ */
 .ana__header {
-  text-align: center;
-  max-width: 680px;
-  margin: 0 auto 72px;
+  margin-bottom: 72px;
 }
 
-/* Tag override — high contrast on light bg */
+/* Tag */
+.ana__htag {
+  display: inline-flex;
+  margin-bottom: 20px;
+}
+
 .ana__tag {
   color: #7a5c00 !important;
   background: rgba(245,197,24,0.16) !important;
   border-color: rgba(245,197,24,0.35) !important;
 }
 
-.ana__title {
-  font-size: clamp(30px, 4vw, 52px);
+/* Split title row */
+.ana__htitle-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: end;
+  margin-bottom: 28px;
+}
+
+.ana__htitle-left {
+  font-size: clamp(30px, 4vw, 54px);
   font-weight: 800;
-  color: #0d0d0d;          /* WCAG AAA: 18.1:1 on #f0f3f8 */
-  line-height: 1.15;
-  margin: 20px 0 16px;
-  letter-spacing: -0.02em;
+  color: #0d0d0d;
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: -0.03em;
 }
 
 .ana__title-accent {
-  /* dark amber — 6.8:1 on #f0f3f8 — passes WCAG AA for large text */
   background: linear-gradient(135deg, #d48800 0%, #b85e00 60%, #c47a00 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.ana__subtitle {
-  font-size: 1.0625rem;
-  color: #3d3d3d;           /* 8.6:1 on #f0f3f8 — WCAG AAA */
-  line-height: 1.7;
+.ana__htitle-right {
+  padding-bottom: 6px;
+}
+
+.ana__hsub {
+  font-size: 1rem;
+  color: #3d3d3d;
+  line-height: 1.72;
   margin: 0;
+}
+
+/* Divider */
+.ana__hdivider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(200,155,0,0.5) 0%, rgba(200,155,0,0.1) 50%, transparent 100%);
+  transform-origin: left center;
+  margin-bottom: 28px;
+}
+
+/* Stats row */
+.ana__hstats {
+  display: flex;
+  gap: 48px;
+}
+
+.ana__hstat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ana__hstat-num {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 900;
+  color: #0d0d0d;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.ana__hstat-suffix {
+  display: inline;
+  font-size: 0.6em;
+  font-weight: 700;
+  color: #c47a00;
+  vertical-align: super;
+  margin-left: 1px;
+}
+
+.ana__hstat-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #666;
+  letter-spacing: 0.01em;
+  margin-top: 4px;
+}
+
+@media (max-width: 860px) {
+  .ana__htitle-row {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .ana__hstats {
+    gap: 28px;
+  }
+}
+
+@media (max-width: 560px) {
+  .ana__header { margin-bottom: 40px; }
+  .ana__htitle-left { font-size: clamp(26px, 7vw, 36px); }
+  .ana__hstats { gap: 20px; }
+  .ana__hstat-num { font-size: 28px; }
 }
 
 /* ============================================================
@@ -218,8 +295,8 @@
 }
 
 @keyframes anaRingPulse {
-  0%, 100% { opacity: 0.45; transform: scale(1); }
-  50%       { opacity: 1;    transform: scale(1.018); }
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 0.8; }
 }
 
 /* ── Center video ─────────────────────────────────────────── */
@@ -310,12 +387,20 @@
   background: rgba(0,0,0,0.1);
 }
 
-/* video */
-.ana__video {
+/* video stack */
+.ana__video-stack {
+  position: relative;
   width: 100%;
   aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.ana__video {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   display: block;
+  top: 0; left: 0;
 }
 
 /* play overlay */
@@ -411,7 +496,6 @@
     0 8px 24px rgba(0,0,0,0.07),
     0 20px 48px rgba(0,0,0,0.06);
   transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  will-change: transform;
 }
 
 .ana__card:hover {
@@ -565,7 +649,7 @@
     min-height: unset;
     flex-direction: column;
     align-items: center;
-    gap: 32px;
+    gap: 28px;
   }
   .ana__rings      { display: none; }
   .ana__connectors { display: none; }
@@ -586,7 +670,7 @@
     position: static;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 10px;
     pointer-events: all;
     width: 100%;
   }
@@ -595,15 +679,54 @@
     position: static;
     width: auto;
     transform: none !important;
+    padding: 14px 14px 12px;
+    border-radius: 16px;
   }
 
+  .ana__card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  .ana__card-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .ana__card-title {
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+  }
+
+  .ana__card-desc {
+    font-size: 0.7rem;
+    line-height: 1.5;
+  }
+
+  .ana__card-strip { left: 12px; right: 12px; }
   .ana__card-connector { display: none; }
 }
 
 @media (max-width: 560px) {
   .ana { padding: 80px 0 100px; }
-  .ana__header { margin-bottom: 48px; }
+  .ana__header { margin-bottom: 40px; }
   .ana__corner { display: none; }
   .ana__video-frame { max-width: 100%; }
   .ana__video-chrome-actions { display: none; }
+
+  .ana__cards { gap: 8px; }
+
+  .ana__card { padding: 12px 12px 10px; }
+
+  .ana__card-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+
+  .ana__card-title { font-size: 0.75rem; }
+  .ana__card-desc  { font-size: 0.67rem; }
 }

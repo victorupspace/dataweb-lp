@@ -100,45 +100,82 @@ export default function Analytics() {
   const videoRef    = useRef(null)
   const captionRef  = useRef(null)
   const cardRefs    = useRef([])
-  const blob1Ref    = useRef(null)
-  const blob2Ref    = useRef(null)
-  const blob3Ref    = useRef(null)
   const ring1Ref    = useRef(null)
   const ring2Ref    = useRef(null)
   const ring3Ref    = useRef(null)
 
   const active = CARDS[activeCard]
 
-  /* ── Blob ambient float ── */
-  useEffect(() => {
-    [
-      { ref: blob1Ref, y: 40,  dur: 8  },
-      { ref: blob2Ref, y: -30, dur: 10 },
-      { ref: blob3Ref, y: 25,  dur: 7  },
-    ].forEach(({ ref, y, dur }) => {
-      if (!ref.current) return
-      gsap.to(ref.current, {
-        y,
-        duration: dur,
-        ease: 'sine.inOut',
-        repeat: -1,
-        yoyo: true,
-      })
-    })
-  }, [])
 
   /* ── ScrollTrigger entry ── */
   useEffect(() => {
     const ctx = gsap.context(() => {
 
-      /* Header */
-      const headerEls = headerRef.current
-        ? headerRef.current.querySelectorAll('.ana__tag, .ana__title, .ana__subtitle')
-        : []
-      gsap.from(headerEls, {
-        y: 36, opacity: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 72%', once: true },
-      })
+      /* ── Header: tag fade + title split + stats counter ── */
+      if (headerRef.current) {
+        const tag    = headerRef.current.querySelector('.ana__htag')
+        const titleL = headerRef.current.querySelector('.ana__htitle-left')
+        const titleR = headerRef.current.querySelector('.ana__htitle-right')
+        const sub    = headerRef.current.querySelector('.ana__hsub')
+        const stats  = headerRef.current.querySelectorAll('.ana__hstat')
+        const divider = headerRef.current.querySelector('.ana__hdivider')
+
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 72%', once: true },
+        })
+
+        tl.fromTo(tag,
+          { autoAlpha: 0, y: 10 },
+          { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power3.out' },
+          0
+        )
+        tl.fromTo(titleL,
+          { autoAlpha: 0, x: -50 },
+          { autoAlpha: 1, x: 0, duration: 0.75, ease: 'power4.out', clearProps: 'transform' },
+          0.1
+        )
+        tl.fromTo(titleR,
+          { autoAlpha: 0, x: 50 },
+          { autoAlpha: 1, x: 0, duration: 0.75, ease: 'power4.out', clearProps: 'transform' },
+          0.1
+        )
+        tl.fromTo(divider,
+          { scaleX: 0 },
+          { scaleX: 1, duration: 0.9, ease: 'power3.out', clearProps: 'transform' },
+          0.35
+        )
+        tl.fromTo(sub,
+          { autoAlpha: 0, y: 14 },
+          { autoAlpha: 1, y: 0, duration: 0.55, ease: 'power3.out', clearProps: 'transform' },
+          0.45
+        )
+
+        /* Stats: number count-up */
+        stats.forEach((el, i) => {
+          const target = parseFloat(el.dataset.target ?? '0')
+          const isInt  = Number.isInteger(target)
+          const proxy  = { val: 0 }
+          tl.fromTo(el,
+            { autoAlpha: 0, y: 20 },
+            { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out', clearProps: 'transform' },
+            0.5 + i * 0.1
+          )
+          tl.to(proxy,
+            {
+              val: target,
+              duration: 1.4,
+              ease: 'power2.out',
+              onUpdate() {
+                const num = el.querySelector('.ana__hstat-num')
+                if (num) num.textContent = isInt
+                  ? Math.round(proxy.val).toLocaleString('pt-BR')
+                  : proxy.val.toFixed(1)
+              },
+            },
+            0.55 + i * 0.1
+          )
+        })
+      }
 
       /* Rings expand */
       gsap.from([ring1Ref.current, ring2Ref.current, ring3Ref.current], {
@@ -147,16 +184,24 @@ export default function Analytics() {
       })
 
       /* Center video */
-      gsap.from(videoRef.current?.closest('.ana__center'), {
-        scale: 0.85, opacity: 0, duration: 0.9, ease: 'back.out(1.4)',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 66%', once: true },
-      })
+      gsap.fromTo(videoRef.current?.closest('.ana__center'),
+        { scale: 0.9, opacity: 0 },
+        {
+          scale: 1, opacity: 1, duration: 0.75, ease: 'power3.out',
+          clearProps: 'transform',
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 66%', once: true },
+        }
+      )
 
       /* Cards stagger */
-      gsap.from(cardRefs.current, {
-        scale: 0.8, opacity: 0, duration: 0.7, stagger: 0.12, ease: 'back.out(1.5)',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 64%', once: true },
-      })
+      gsap.fromTo(cardRefs.current,
+        { scale: 0.88, opacity: 0 },
+        {
+          scale: 1, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out',
+          clearProps: 'transform',
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 64%', once: true },
+        }
+      )
 
     }, sectionRef)
 
@@ -168,63 +213,34 @@ export default function Analytics() {
     if (isAnimating.current || idx === activeCard) return
     isAnimating.current = true
 
-    const videoEl = videoRef.current
+    setActiveCard(idx)
+    setTimeout(() => { isAnimating.current = false }, 400)
 
-    gsap.timeline({ onComplete: () => { isAnimating.current = false } })
-      .to(videoEl, { opacity: 0, scale: 0.97, duration: 0.22, ease: 'power2.in' })
-      .call(() => {
-        if (videoEl) {
-          videoEl.src = CARDS[idx].video
-          videoEl.load()
-          videoEl.play().catch(() => {})
-        }
-        setActiveCard(idx)
-      })
-      .to(videoEl, { opacity: 1, scale: 1, duration: 0.35, ease: 'power2.out' })
-
-    // pulse the clicked card
     const cardEl = cardRefs.current[idx]
     if (cardEl) {
       gsap.fromTo(cardEl,
-        { scale: 0.96 },
-        { scale: 1, duration: 0.5, ease: 'elastic.out(1, 0.4)' },
+        { scale: 0.97 },
+        { scale: 1, duration: 0.45, ease: 'elastic.out(1, 0.4)', clearProps: 'transform' },
       )
     }
 
-    // animate caption
     if (captionRef.current) {
       gsap.fromTo(captionRef.current,
-        { y: 6, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out', delay: 0.2 },
+        { y: 5, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out', delay: 0.1 },
       )
     }
   }
 
-  /* ── Auto-cycle every 5s ── */
-  useEffect(() => {
-    const id = setInterval(() => {
-      setActiveCard(prev => {
-        const next = (prev + 1) % CARDS.length
-        const videoEl = videoRef.current
-        if (videoEl) {
-          videoEl.src = CARDS[next].video
-          videoEl.load()
-          videoEl.play().catch(() => {})
-        }
-        return next
-      })
-    }, 5000)
-    return () => clearInterval(id)
-  }, [])
 
   return (
     <section className="section section--light ana" id="analytics" ref={sectionRef}>
 
       {/* ── Background blobs ── */}
       <div className="ana__blobs" aria-hidden="true">
-        <div className="ana__blob ana__blob--1" ref={blob1Ref}/>
-        <div className="ana__blob ana__blob--2" ref={blob2Ref}/>
-        <div className="ana__blob ana__blob--3" ref={blob3Ref}/>
+        <div className="ana__blob ana__blob--1"/>
+        <div className="ana__blob ana__blob--2"/>
+        <div className="ana__blob ana__blob--3"/>
       </div>
       <div className="ana__grid-overlay" aria-hidden="true"/>
 
@@ -240,9 +256,11 @@ export default function Analytics() {
 
       <div className="container">
 
-        {/* ── Header ── */}
+        {/* ── Header: split title + stats counter ── */}
         <div className="ana__header" ref={headerRef}>
-          <span className="section__tag ana__tag">
+
+          {/* Tag */}
+          <span className="section__tag ana__tag ana__htag">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <rect x="1"    y="6"   width="2.5" height="5"   rx="0.8" fill="currentColor" opacity="0.6"/>
               <rect x="4.75" y="3.5" width="2.5" height="7.5" rx="0.8" fill="currentColor" opacity="0.8"/>
@@ -250,13 +268,38 @@ export default function Analytics() {
             </svg>
             BI & Analytics
           </span>
-          <h2 className="section__title ana__title">
-            Enxergue o universo<br/>
-            do seu <span className="ana__title-accent">negócio.</span>
-          </h2>
-          <p className="ana__subtitle">
-            Transforme dados da sua ótica em informações estratégicas. Clique em cada módulo para ver a plataforma em ação.
-          </p>
+
+          {/* Split title */}
+          <div className="ana__htitle-row">
+            <h2 className="ana__htitle-left">
+              Enxergue o universo<br/>
+              do seu <span className="ana__title-accent">negócio.</span>
+            </h2>
+            <div className="ana__htitle-right">
+              <p className="ana__hsub">
+                Transforme dados da sua ótica em informações estratégicas. Clique em cada módulo para ver a plataforma em ação.
+              </p>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="ana__hdivider" />
+
+          {/* Stats row */}
+          <div className="ana__hstats">
+            {[
+              { target: 340, suffix: '%', label: 'mais visibilidade' },
+              { target: 2.5, suffix: '×', label: 'mais conversão' },
+              { target: 98,  suffix: '%', label: 'satisfação dos clientes' },
+            ].map((s, i) => (
+              <div key={i} className="ana__hstat" data-target={s.target}>
+                <span className="ana__hstat-num">0</span>
+                <span className="ana__hstat-suffix">{s.suffix}</span>
+                <span className="ana__hstat-label">{s.label}</span>
+              </div>
+            ))}
+          </div>
+
         </div>
 
         {/* ── Orbital stage ── */}
@@ -343,16 +386,27 @@ export default function Analytics() {
                 </div>
               </div>
 
-              {/* Video */}
-              <video
-                ref={videoRef}
-                className="ana__video"
-                src={active.video}
-                autoPlay
-                loop
-                muted
-                playsInline
-              />
+              {/* Videos empilhados — crossfade por opacity, sem trocar src */}
+              <div className="ana__video-stack">
+                {CARDS.map((card, i) => (
+                  <video
+                    key={card.id}
+                    ref={i === 0 ? videoRef : null}
+                    className="ana__video"
+                    src={card.video}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    style={{
+                      opacity: activeCard === i ? 1 : 0,
+                      transition: 'opacity 0.35s ease',
+                      position: i === 0 ? 'relative' : 'absolute',
+                      inset: 0,
+                    }}
+                  />
+                ))}
+              </div>
 
               {/* Play overlay */}
               <div className="ana__video-overlay">

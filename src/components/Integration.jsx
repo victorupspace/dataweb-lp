@@ -245,29 +245,60 @@ export default function Integration() {
   const cardRefs      = useRef([])
   const tabRefs       = useRef([])
   const tabFillRefs   = useRef([])
-  const blob1Ref      = useRef(null)
-  const blob2Ref      = useRef(null)
-  const blob3Ref      = useRef(null)
   const activeRef     = useRef(0)
   const progressTween = useRef(null)
   const fns           = useRef({ goTo: null, startProgress: null })
   const sectionRef    = useRef(null)
   const panelRef      = useRef(null)
   const stackWrapRef  = useRef(null)
-
-  /* ── Blobs ── */
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.to(blob1Ref.current, { x: 120, y: 80, scale: 1.3, duration: 24, ease: 'sine.inOut', repeat: -1, yoyo: true })
-      gsap.to(blob2Ref.current, { x: -100, y: -80, scale: 0.8, duration: 30, ease: 'sine.inOut', repeat: -1, yoyo: true })
-      gsap.to(blob3Ref.current, { x: 60, y: -110, scale: 1.2, duration: 20, ease: 'sine.inOut', repeat: -1, yoyo: true })
-    })
-    return () => ctx.revert()
-  }, [])
+  const headerRef     = useRef(null)
 
   /* ── ScrollTrigger entry ── */
   useEffect(() => {
     const ctx = gsap.context(() => {
+
+      /* Header: número revela de baixo, título vem da direita por palavra */
+      if (headerRef.current) {
+        const tag     = headerRef.current.querySelector('.itg__htag')
+        const words   = headerRef.current.querySelectorAll('.itg__hword')
+        const em      = headerRef.current.querySelector('.itg__htitle-em')
+        const sub     = headerRef.current.querySelector('.itg__hsub')
+
+        gsap.set([tag, words, em, sub], { autoAlpha: 0 })
+
+        gsap.fromTo(tag,
+          { autoAlpha: 0, x: -16 },
+          {
+            autoAlpha: 1, x: 0, duration: 0.5, ease: 'power3.out',
+            scrollTrigger: { trigger: sectionRef.current, start: 'top 70%', once: true },
+          }
+        )
+        gsap.fromTo(words,
+          { autoAlpha: 0, x: 40 },
+          {
+            autoAlpha: 1, x: 0, duration: 0.6, stagger: 0.07, ease: 'power3.out',
+            clearProps: 'transform',
+            scrollTrigger: { trigger: sectionRef.current, start: 'top 68%', once: true },
+          }
+        )
+        gsap.fromTo(em,
+          { autoAlpha: 0, x: 50, skewX: 4 },
+          {
+            autoAlpha: 1, x: 0, skewX: 0, duration: 0.7, ease: 'power3.out',
+            clearProps: 'transform',
+            scrollTrigger: { trigger: sectionRef.current, start: 'top 68%', once: true },
+          }
+        )
+        gsap.fromTo(sub,
+          { autoAlpha: 0, y: 16 },
+          {
+            autoAlpha: 1, y: 0, duration: 0.55, ease: 'power3.out',
+            clearProps: 'transform',
+            scrollTrigger: { trigger: sectionRef.current, start: 'top 66%', once: true },
+          }
+        )
+      }
+
       gsap.fromTo(tabRefs.current,
         { x: -24, opacity: 0 },
         {
@@ -392,26 +423,34 @@ export default function Integration() {
     <section className="section section--dark itg" id="plataforma" ref={sectionRef}>
 
       <div className="itg__blobs" aria-hidden="true">
-        <div ref={blob1Ref} className="itg__blob itg__blob--1" />
-        <div ref={blob2Ref} className="itg__blob itg__blob--2" />
-        <div ref={blob3Ref} className="itg__blob itg__blob--3" />
+        <div className="itg__blob itg__blob--1" />
+        <div className="itg__blob itg__blob--2" />
+        <div className="itg__blob itg__blob--3" />
       </div>
 
       <div className="itg__grid-overlay" aria-hidden="true" />
 
       <div className="container">
-        <div className="section__header">
-          <span className="section__tag">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <rect x="1" y="2" width="10" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
-              <path d="M4 9v2M8 9v2M3 11h6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-            </svg>
-            Plataforma Web
-          </span>
-          <h2 className="section__title">Conheça o Optfacil</h2>
-          <p className="section__subtitle">
-            A solução definitiva para a gestão avançada de ordens de serviço em óticas
-          </p>
+        {/* ── Header ── */}
+        <div className="itg__header" ref={headerRef}>
+          <div className="itg__header-content">
+            <span className="section__tag itg__htag">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <rect x="1" y="2" width="10" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
+                <path d="M4 9v2M8 9v2M3 11h6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+              </svg>
+              Plataforma Web
+            </span>
+            <h2 className="itg__htitle">
+              <span className="itg__hword">Conheça</span>{' '}
+              <span className="itg__hword">o</span>
+              <br/>
+              <em className="itg__htitle-em">Optfácil</em>
+            </h2>
+            <p className="itg__hsub">
+              A solução definitiva para a gestão avançada de ordens de serviço em óticas
+            </p>
+          </div>
         </div>
 
         <div className="itg__body">

@@ -1288,6 +1288,55 @@ ul, ol {
    APP SHOWCASE — CAROUSEL REDESIGN
    ============================================================ */
 
+/* ── Header: split-word left-aligned ── */
+.acs__header {
+  margin-bottom: 64px;
+  max-width: 620px;
+}
+
+.acs__htag {
+  margin-bottom: 24px;
+}
+
+.acs__htitle {
+  font-size: clamp(32px, 4.5vw, 58px);
+  font-weight: 800;
+  color: #0d0d0d;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin: 16px 0 0;
+}
+
+.acs__hword-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.acs__hword {
+  display: inline-block;
+}
+
+.acs__hline {
+  height: 3px;
+  width: 56px;
+  background: linear-gradient(90deg, #FBB040, #f5c518);
+  border-radius: 2px;
+  margin: 22px 0 20px;
+}
+
+.acs__hsub {
+  font-size: 1.0625rem;
+  color: #4a4a4a;
+  line-height: 1.7;
+  max-width: 480px;
+}
+
+@media (max-width: 680px) {
+  .acs__header { margin-bottom: 40px; }
+  .acs__htitle { font-size: clamp(26px, 7vw, 38px); }
+}
+
 /* Layout */
 .acs__body {
   display: grid;
