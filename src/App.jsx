@@ -5,6 +5,7 @@ import Hero from './components/Hero'
 import AppShowcase from './components/AppShowcase'
 import Integration from './components/Integration'
 import Products from './components/Products'
+import CRM from './components/CRM'
 import Analytics from './components/Analytics'
 import Franchise from './components/Franchise'
 import Footer from './components/Footer'
@@ -30,6 +31,7 @@ export default function App() {
           <AppShowcase />
           <Integration />
           <Products />
+          <CRM />
           <Analytics />
           <Franchise />
         </main>

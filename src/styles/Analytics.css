@@ -134,13 +134,13 @@
    Header — split layout + stats counter
    ============================================================ */
 .ana__header {
-  margin-bottom: 72px;
+  margin-bottom: 80px;
 }
 
-/* Tag */
+/* ── Tag ── */
 .ana__htag {
   display: inline-flex;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .ana__tag {
@@ -149,22 +149,22 @@
   border-color: rgba(245,197,24,0.35) !important;
 }
 
-/* Split title row */
+/* ── Title + sub: two-column ── */
 .ana__htitle-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  gap: 56px;
   align-items: end;
-  margin-bottom: 28px;
+  margin-bottom: 40px;
 }
 
 .ana__htitle-left {
-  font-size: clamp(30px, 4vw, 54px);
+  font-size: clamp(32px, 3.8vw, 56px);
   font-weight: 800;
   color: #0d0d0d;
-  line-height: 1.1;
+  line-height: 1.08;
   margin: 0;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
 }
 
 .ana__title-accent {
@@ -175,77 +175,156 @@
 }
 
 .ana__htitle-right {
-  padding-bottom: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 4px;
+  border-left: 2px solid rgba(200,155,0,0.22);
+  padding-left: 28px;
 }
 
 .ana__hsub {
-  font-size: 1rem;
-  color: #3d3d3d;
-  line-height: 1.72;
-  margin: 0;
+  font-size: 0.9375rem;
+  color: #555;
+  line-height: 1.78;
+  margin: 0 0 16px;
 }
 
-/* Divider */
+.ana__hsub-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #b87800;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  transition: gap 0.2s ease;
+}
+
+.ana__hsub-cta:hover { gap: 9px; }
+
+.ana__hsub-cta svg {
+  flex-shrink: 0;
+}
+
+/* ── Divider ── */
 .ana__hdivider {
   height: 1px;
-  background: linear-gradient(90deg, rgba(200,155,0,0.5) 0%, rgba(200,155,0,0.1) 50%, transparent 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(200,155,0,0.45) 0%,
+    rgba(200,155,0,0.12) 45%,
+    transparent 100%
+  );
   transform-origin: left center;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
 }
 
-/* Stats row */
+/* ── Stats row ── */
 .ana__hstats {
   display: flex;
-  gap: 48px;
+  gap: 0;
 }
 
 .ana__hstat {
+  position: relative;
   display: flex;
   flex-direction: column;
+  padding: 20px 40px 20px 0;
+  cursor: default;
+}
+
+/* vertical separator between stats */
+.ana__hstat + .ana__hstat {
+  padding-left: 40px;
+  border-left: 1px solid rgba(0,0,0,0.09);
+}
+
+/* accent bar on top */
+.ana__hstat::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 28px; height: 2px;
+  background: linear-gradient(90deg, #c47a00, #f5c518);
+  border-radius: 2px;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: opacity 0.3s ease, transform 0.35s ease;
+}
+
+.ana__hstat + .ana__hstat::before {
+  left: 40px;
+}
+
+.ana__hstat:hover::before {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.ana__hstat-value-row {
+  display: flex;
+  align-items: baseline;
   gap: 2px;
+  line-height: 1;
+  margin-bottom: 6px;
 }
 
 .ana__hstat-num {
-  font-size: clamp(28px, 4vw, 42px);
+  font-size: clamp(30px, 3.5vw, 44px);
   font-weight: 900;
   color: #0d0d0d;
-  letter-spacing: -0.04em;
-  line-height: 1;
+  letter-spacing: -0.045em;
   font-variant-numeric: tabular-nums;
 }
 
 .ana__hstat-suffix {
-  display: inline;
-  font-size: 0.6em;
-  font-weight: 700;
+  font-size: clamp(14px, 1.6vw, 20px);
+  font-weight: 800;
   color: #c47a00;
-  vertical-align: super;
+  letter-spacing: -0.02em;
   margin-left: 1px;
+  line-height: 1;
 }
 
 .ana__hstat-label {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 500;
-  color: #666;
-  letter-spacing: 0.01em;
-  margin-top: 4px;
+  color: #888;
+  letter-spacing: 0.03em;
+  text-transform: lowercase;
 }
 
-@media (max-width: 860px) {
+/* ── Responsive ── */
+@media (max-width: 920px) {
   .ana__htitle-row {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 20px;
   }
-  .ana__hstats {
-    gap: 28px;
+  .ana__htitle-right {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid rgba(200,155,0,0.18);
+    padding-top: 20px;
+    flex-direction: row;
+    align-items: center;
+    gap: 32px;
   }
+  .ana__hsub { margin-bottom: 0; }
 }
 
-@media (max-width: 560px) {
-  .ana__header { margin-bottom: 40px; }
-  .ana__htitle-left { font-size: clamp(26px, 7vw, 36px); }
-  .ana__hstats { gap: 20px; }
+@media (max-width: 600px) {
+  .ana__header { margin-bottom: 48px; }
+  .ana__htitle-left { font-size: clamp(28px, 7.5vw, 38px); }
+  .ana__hstats { flex-wrap: wrap; gap: 0; }
+  .ana__hstat { padding: 16px 28px 16px 0; }
+  .ana__hstat + .ana__hstat { padding-left: 28px; }
+  .ana__hstat + .ana__hstat::before { left: 28px; }
   .ana__hstat-num { font-size: 28px; }
+  .ana__htitle-right { flex-direction: column; gap: 12px; }
+  .ana__hsub-cta { display: none; }
 }
 
 /* ============================================================

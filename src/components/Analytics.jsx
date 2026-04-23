@@ -277,8 +277,15 @@ export default function Analytics() {
             </h2>
             <div className="ana__htitle-right">
               <p className="ana__hsub">
-                Transforme dados da sua ótica em informações estratégicas. Clique em cada módulo para ver a plataforma em ação.
+                Transforme dados da sua ótica em informações estratégicas.
+                Interaja com cada módulo e veja a plataforma em ação.
               </p>
+              <a href="#plataforma" className="ana__hsub-cta">
+                Ver plataforma completa
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </a>
             </div>
           </div>
 
@@ -289,12 +296,14 @@ export default function Analytics() {
           <div className="ana__hstats">
             {[
               { target: 340, suffix: '%', label: 'mais visibilidade' },
-              { target: 2.5, suffix: '×', label: 'mais conversão' },
+              { target: 2.5, suffix: '×',  label: 'mais conversão' },
               { target: 98,  suffix: '%', label: 'satisfação dos clientes' },
             ].map((s, i) => (
               <div key={i} className="ana__hstat" data-target={s.target}>
-                <span className="ana__hstat-num">0</span>
-                <span className="ana__hstat-suffix">{s.suffix}</span>
+                <div className="ana__hstat-value-row">
+                  <span className="ana__hstat-num">0</span>
+                  <span className="ana__hstat-suffix">{s.suffix}</span>
+                </div>
                 <span className="ana__hstat-label">{s.label}</span>
               </div>
             ))}

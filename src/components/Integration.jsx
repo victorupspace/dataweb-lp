@@ -465,27 +465,37 @@ export default function Integration() {
                 onClick={() => handleTab(i)}
                 ref={el => (tabRefs.current[i] = el)}
               >
-                {/* Vertical progress fill */}
+                {/* Horizontal bottom progress bar */}
                 <div
                   className="itg__tab-fill"
                   ref={el => (tabFillRefs.current[i] = el)}
                 />
 
-                <div
-                  className="itg__tab-icon"
-                  style={{ background: i === active ? `${s.color}22` : 'rgba(255,255,255,0.06)' }}
-                >
-                  <Icon
-                    name={s.icon}
-                    color={i === active ? s.color : 'rgba(255,255,255,0.28)'}
-                  />
+                {/* Index number */}
+                <div className="itg__tab-icon">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    {i === active
+                      ? <Icon name={s.icon} color={s.color} />
+                      : <text
+                          x="9" y="13"
+                          textAnchor="middle"
+                          fontSize="11"
+                          fontWeight="700"
+                          fill="rgba(255,255,255,0.22)"
+                          fontFamily="inherit"
+                        >
+                          {String(i + 1).padStart(2, '0')}
+                        </text>
+                    }
+                  </svg>
                 </div>
 
+                {/* Body: label chip + title (row 1) + desc (row 2) */}
                 <div className="itg__tab-body">
                   <span className="itg__tab-label">{s.label}</span>
                   <p className="itg__tab-title">{s.title}</p>
-                  <p className="itg__tab-desc">{s.subtitle}</p>
                 </div>
+                <p className="itg__tab-desc">{s.subtitle}</p>
               </button>
             ))}
           </div>
