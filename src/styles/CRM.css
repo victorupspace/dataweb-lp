@@ -17,10 +17,12 @@
 /* ── Section ─────────────────────────────────────────────── */
 .crm {
   position: relative;
-  background: #05101A;
+  background:
+    linear-gradient(180deg, #06131b 0%, #071018 48%, #050b11 100%);
   overflow: hidden;
-  padding: 140px 0 160px;
+  padding: 132px 0 148px;
   color: #E8F2F5;
+  isolation: isolate;
 }
 
 /* ── Background layers ────────────────────────────────────── */
@@ -42,18 +44,14 @@
   Mantido como faixa de luz difusa, não como spotlight duro.
 */
 .crm__blob--main {
-  width: 1200px;
-  height: 480px;
-  top: -80px;
+  width: min(1240px, 92vw);
+  height: 440px;
+  top: -120px;
   left: 50%;
   transform: translateX(-50%);
-  background: radial-gradient(
-    ellipse at 50% 40%,
-    rgba(8,145,168,0.22) 0%,
-    rgba(6,94,109,0.10) 42%,
-    transparent 70%
-  );
-  filter: blur(72px);
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(93,211,224,0.18) 22%, rgba(251,176,64,0.07) 54%, transparent 82%);
+  filter: blur(76px);
   will-change: transform;
 }
 
@@ -62,16 +60,14 @@
   sem deixar a seção toda azulada.
 */
 .crm__blob--accent {
-  width: 700px;
-  height: 700px;
-  bottom: -340px;
-  left: -200px;
-  background: radial-gradient(
-    circle at 35% 35%,
-    rgba(6,94,109,0.28) 0%,
-    transparent 68%
-  );
-  filter: blur(96px);
+  width: 760px;
+  height: 360px;
+  bottom: -120px;
+  left: -240px;
+  border-radius: 0;
+  background: linear-gradient(100deg, rgba(0,150,128,0.14), rgba(8,145,168,0.08), transparent 70%);
+  filter: blur(88px);
+  transform: rotate(-10deg);
 }
 
 /* Film grain — textura sutil, não muda cor */
@@ -87,10 +83,13 @@
 .crm__grid {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(8,145,168,0.09) 1px, transparent 1px);
-  background-size: 30px 30px;
-  mask-image: radial-gradient(ellipse 60% 50% at 50% 40%, black 0%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 40%, black 0%, transparent 100%);
+  background-image:
+    linear-gradient(rgba(93,211,224,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(93,211,224,0.04) 1px, transparent 1px);
+  background-size: 58px 58px;
+  opacity: 0.58;
+  mask-image: linear-gradient(180deg, transparent, black 16%, black 80%, transparent);
+  -webkit-mask-image: linear-gradient(180deg, transparent, black 16%, black 80%, transparent);
 }
 
 /* Vignette radial — apaga as bordas sem adicionar cor */
@@ -99,8 +98,8 @@
   inset: 0;
   background: radial-gradient(
     ellipse 100% 90% at 50% 50%,
-    transparent 35%,
-    rgba(2,7,12,0.72) 100%
+    transparent 28%,
+    rgba(2,7,12,0.78) 100%
   );
   pointer-events: none;
   z-index: 1;
@@ -109,14 +108,14 @@
 /* Separator teal no topo */
 .crm__top-line {
   position: absolute;
-  top: 0; left: 8%; right: 8%;
+  top: 0; left: 0; right: 0;
   height: 1px;
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(8,145,168,0.32) 30%,
-    rgba(8,145,168,0.52) 50%,
-    rgba(8,145,168,0.32) 70%,
+    rgba(8,145,168,0.22) 28%,
+    rgba(251,176,64,0.2) 52%,
+    rgba(8,145,168,0.18) 74%,
     transparent
   );
   pointer-events: none;
@@ -126,7 +125,7 @@
 /* Separator neutro na base */
 .crm__bottom-line {
   position: absolute;
-  bottom: 0; left: 8%; right: 8%;
+  bottom: 0; left: 0; right: 0;
   height: 1px;
   background: linear-gradient(
     90deg,
@@ -150,7 +149,8 @@
    Header
    ============================================================ */
 .crm__header {
-  margin-bottom: 88px;
+  margin-bottom: 78px;
+  max-width: 1080px;
 }
 
 /* Tag */
@@ -163,9 +163,9 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #5DD3E0;
-  background: rgba(8,145,168,0.12);
-  border: 1px solid rgba(8,145,168,0.28);
+  color: rgba(93,211,224,0.92);
+  background: rgba(93,211,224,0.08);
+  border: 1px solid rgba(93,211,224,0.2);
   border-radius: 100px;
   margin-bottom: 24px;
 }
@@ -176,18 +176,19 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(93,211,224,0.48);
-  margin: 0 0 18px;
+  color: rgba(251,176,64,0.62);
+  margin: 0 0 16px;
 }
 
 /* Título — branco puro, sem gradiente, tamanho grande */
 .crm__title {
-  font-size: clamp(40px, 5.2vw, 76px);
+  max-width: 880px;
+  font-size: clamp(42px, 5vw, 72px);
   font-weight: 900;
   color: #ffffff;
-  line-height: 1.0;
+  line-height: 0.98;
   margin: 0;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.045em;
   /* overflow: hidden para conter o skewY do stagger sem clipar o parent */
 }
 
@@ -202,32 +203,33 @@
   height: 1px;
   background: linear-gradient(
     90deg,
-    rgba(8,145,168,0.48) 0%,
-    rgba(8,145,168,0.1) 55%,
+    rgba(251,176,64,0.42) 0%,
+    rgba(93,211,224,0.26) 36%,
+    rgba(93,211,224,0.08) 68%,
     transparent 100%
   );
   transform-origin: left center;
-  margin: 40px 0 34px;
+  margin: 36px 0 32px;
 }
 
 /* Sub + stats row */
 .crm__htitle-row {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 620px) auto;
   gap: 48px;
-  align-items: center;
+  align-items: end;
 }
 
 .crm__sub {
-  font-size: 1rem;
-  color: rgba(210,228,234,0.58);
+  font-size: 1.02rem;
+  color: rgba(210,228,234,0.64);
   line-height: 1.8;
   margin: 0;
   max-width: 520px;
 }
 
 .crm__sub strong {
-  color: #5DD3E0;
+  color: #FBB040;
   font-weight: 700;
 }
 
@@ -253,7 +255,7 @@
 .crm__hstat-value {
   font-size: clamp(26px, 2.8vw, 40px);
   font-weight: 900;
-  color: #5DD3E0;
+  color: #E8F2F5;
   letter-spacing: -0.04em;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -262,7 +264,7 @@
 .crm__hstat-label {
   font-size: 0.68rem;
   font-weight: 500;
-  color: rgba(210,228,234,0.36);
+  color: rgba(93,211,224,0.52);
   letter-spacing: 0.04em;
 }
 
@@ -283,8 +285,8 @@
    ============================================================ */
 .crm__body {
   display: grid;
-  grid-template-columns: 1fr 420px;
-  gap: 52px;
+  grid-template-columns: minmax(0, 1fr) 410px;
+  gap: 58px;
   align-items: start;
 }
 
@@ -300,15 +302,16 @@
 .crm__mock {
   width: 100%;
   max-width: 580px;
-  background: #0C1E2B;
-  border: 1px solid rgba(8,145,168,0.16);
-  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018)),
+    #0a1723;
+  border: 1px solid rgba(93,211,224,0.16);
+  border-radius: 20px;
   overflow: hidden;
   box-shadow:
-    0 0 0 1px rgba(8,145,168,0.05) inset,
-    0 2px 8px rgba(0,0,0,0.5),
-    0 16px 48px rgba(0,0,0,0.5),
-    0 48px 96px rgba(0,0,0,0.4);
+    0 0 0 1px rgba(255,255,255,0.04) inset,
+    0 18px 46px rgba(0,0,0,0.48),
+    0 54px 110px rgba(0,0,0,0.42);
   position: relative;
   z-index: 1;
 }
@@ -318,7 +321,7 @@
   position: absolute;
   inset: -60px;
   border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--gc, #0891A8) 18%, transparent) 0%, transparent 65%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--gc, #0891A8) 14%, transparent) 0%, transparent 68%);
   pointer-events: none;
   z-index: 0;
   transition: background 0.6s ease;
@@ -335,9 +338,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 14px;
-  background: #071018;
-  border-bottom: 1px solid rgba(8,145,168,0.12);
+  padding: 11px 14px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025)),
+    #071018;
+  border-bottom: 1px solid rgba(93,211,224,0.12);
   flex-shrink: 0;
 }
 
@@ -350,10 +355,10 @@
 
 .crm__mock-url {
   flex: 1;
-  background: rgba(255,255,255,0.04);
+  background: rgba(2,7,12,0.52);
   border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 5px;
-  padding: 3px 10px;
+  border-radius: 8px;
+  padding: 4px 10px;
   font-size: 9.5px;
   color: rgba(255,255,255,0.25);
   display: flex;
@@ -373,14 +378,16 @@
 /* Inner layout */
 .crm__mock-inner {
   display: flex;
-  height: 360px;
+  height: 370px;
 }
 
 /* Sidebar */
 .crm__sidebar {
-  width: 52px;
-  background: #071018;
-  border-right: 1px solid rgba(8,145,168,0.09);
+  width: 58px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.045), transparent),
+    #071018;
+  border-right: 1px solid rgba(93,211,224,0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -392,8 +399,8 @@
 .crm__sidebar-logo { margin-bottom: 16px; }
 
 .crm__sidebar-item {
-  width: 36px; height: 36px;
-  border-radius: 9px;
+  width: 38px; height: 38px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -404,8 +411,9 @@
 }
 
 .crm__sidebar-item.is-active {
-  background: rgba(8,145,168,0.2);
+  background: rgba(93,211,224,0.14);
   color: #5DD3E0;
+  box-shadow: 0 0 0 1px rgba(93,211,224,0.18) inset;
 }
 
 /* Panel */
@@ -414,8 +422,8 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: 16px;
-  gap: 12px;
+  padding: 18px;
+  gap: 13px;
 }
 
 .crm__panel-top {
@@ -425,7 +433,7 @@
 }
 
 .crm__panel-title {
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #E8F2F5;
   margin: 0 0 2px;
@@ -433,7 +441,7 @@
 
 .crm__panel-subtitle {
   font-size: 0.65rem;
-  color: rgba(210,228,234,0.30);
+  color: rgba(210,228,234,0.38);
   margin: 0;
 }
 
@@ -442,8 +450,8 @@
   align-items: center;
   gap: 6px;
   padding: 4px 10px;
-  background: rgba(8,145,168,0.14);
-  border: 1px solid rgba(8,145,168,0.28);
+  background: rgba(93,211,224,0.1);
+  border: 1px solid rgba(93,211,224,0.24);
   border-radius: 100px;
   font-size: 0.65rem;
   font-weight: 700;
@@ -468,7 +476,7 @@
   grid-template-columns: 1.4fr 1fr 1fr 0.8fr;
   gap: 8px;
   padding: 0 10px 6px;
-  border-bottom: 1px solid rgba(8,145,168,0.09);
+  border-bottom: 1px solid rgba(93,211,224,0.1);
   font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -489,10 +497,10 @@
   grid-template-columns: 1.4fr 1fr 1fr 0.8fr;
   gap: 8px;
   align-items: center;
-  padding: 8px 10px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.035);
-  border: 1px solid rgba(255,255,255,0.055);
+  padding: 9px 10px;
+  border-radius: 11px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.065);
   opacity: 0;
   transform: translateY(7px);
   transition: opacity 0.3s ease, transform 0.3s ease, background 0.18s, border-color 0.18s;
@@ -504,8 +512,8 @@
 }
 
 .crm__row:hover {
-  background: rgba(8,145,168,0.09);
-  border-color: rgba(8,145,168,0.2);
+  background: rgba(93,211,224,0.07);
+  border-color: rgba(93,211,224,0.18);
 }
 
 .crm__row-name {
@@ -594,19 +602,20 @@
 .crm__features {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 /* Base: superfície neutra escura, sem cor de accent no idle */
 .crm__feature {
   position: relative;
   display: grid;
-  grid-template-columns: 48px 1fr auto auto;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
   align-items: center;
-  gap: 14px;
-  padding: 18px 18px 18px 22px;
-  background: rgba(255,255,255,0.032);
-  border: 1px solid rgba(255,255,255,0.065);
+  gap: 15px;
+  padding: 18px 18px 18px 20px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.052), rgba(255,255,255,0.024));
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 18px;
   cursor: pointer;
   text-align: left;
@@ -620,16 +629,21 @@
 }
 
 .crm__feature:hover {
-  transform: translateX(5px);
-  background: rgba(255,255,255,0.06);
+  transform: translateX(4px);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.078), rgba(255,255,255,0.032));
   border-color: color-mix(in srgb, var(--fc) 32%, rgba(255,255,255,0.1));
   box-shadow: 0 4px 14px rgba(0,0,0,0.3);
 }
 
 .crm__feature.is-active {
-  transform: translateX(5px);
-  background: color-mix(in srgb, var(--fc) 8%, #0C1E2B);
-  border-color: color-mix(in srgb, var(--fc) 42%, transparent);
+  transform: translateX(4px);
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--fc) 13%, rgba(255,255,255,0.055)),
+      rgba(255,255,255,0.026)
+    );
+  border-color: color-mix(in srgb, var(--fc) 38%, rgba(255,255,255,0.08));
   box-shadow:
     0 0 0 3px color-mix(in srgb, var(--fc) 9%, transparent),
     0 4px 24px rgba(0,0,0,0.4),
@@ -654,8 +668,8 @@
 .crm__feature-icon {
   width: 48px; height: 48px;
   border-radius: 13px;
-  background: rgba(255,255,255,0.055);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(2,7,12,0.48);
+  border: 1px solid rgba(255,255,255,0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -676,9 +690,9 @@
 .crm__feature-body { min-width: 0; }
 
 .crm__feature-title {
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 700;
-  color: rgba(210,228,234,0.68);
+  color: rgba(232,242,245,0.76);
   margin: 0 0 4px;
   line-height: 1.3;
   transition: color 0.24s;
@@ -689,9 +703,9 @@
 }
 
 .crm__feature-desc {
-  font-size: 0.75rem;
-  color: rgba(210,228,234,0.36);
-  line-height: 1.6;
+  font-size: 0.76rem;
+  color: rgba(210,228,234,0.46);
+  line-height: 1.62;
   margin: 0;
   max-height: 0;
   overflow: hidden;
@@ -712,6 +726,8 @@
   gap: 2px;
   flex-shrink: 0;
   opacity: 0;
+  grid-column: 3;
+  grid-row: 1;
   transition: opacity 0.28s ease;
 }
 
@@ -734,42 +750,24 @@
 }
 
 /* Seta */
-.crm__feature-arrow {
-  width: 30px; height: 30px;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.045);
-  border: 1px solid rgba(255,255,255,0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(255,255,255,0.20);
-  flex-shrink: 0;
-  transition: background 0.24s, border-color 0.24s, color 0.24s, transform 0.34s cubic-bezier(0.22,1,0.36,1);
-}
-
-.crm__feature.is-active .crm__feature-arrow,
-.crm__feature:hover .crm__feature-arrow {
-  background: var(--fc);
-  border-color: var(--fc);
-  color: #07131A;
-  transform: translateX(3px);
-}
+.crm__feature-arrow { display: none; }
 
 /* ============================================================
    Impact banner
    ============================================================ */
 .crm__impact {
-  margin-top: 100px;
+  margin-top: 90px;
 }
 
 .crm__impact-inner {
   display: flex;
   align-items: center;
   gap: 28px;
-  padding: 40px 52px;
-  background: rgba(255,255,255,0.025);
-  border: 1px solid rgba(255,255,255,0.065);
-  border-radius: 24px;
+  padding: 38px 48px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.058), rgba(255,255,255,0.024));
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 22px;
   position: relative;
   overflow: hidden;
 }
@@ -807,7 +805,7 @@
 }
 
 .crm__impact-quote {
-  font-size: clamp(20px, 2.6vw, 34px);
+  font-size: clamp(21px, 2.5vw, 32px);
   font-weight: 900;
   color: #ffffff;
   letter-spacing: -0.035em;
@@ -816,8 +814,8 @@
 }
 
 .crm__impact-sub {
-  font-size: 0.88rem;
-  color: rgba(210,228,234,0.46);
+  font-size: 0.9rem;
+  color: rgba(210,228,234,0.55);
   line-height: 1.72;
   margin: 0;
   max-width: 680px;

@@ -1,546 +1,210 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import '../styles/Integration.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-/* ─────────────────────────────────────────────────────────
-   Slides
-───────────────────────────────────────────────────────── */
-const SLIDES = [
+const METRICS = [
   {
-    id: 1,
-    title: 'Eficiência que Transforma o Atendimento',
-    subtitle: 'Eleve o padrão da sua ótica unindo tecnologia de ponta com uma jornada de compra mais rápida e segura para seu cliente.',
-    color: '#6C63FF',
-    label: 'Atendimento personalizado',
-    icon: 'grid',
+    label: 'Operação integrada',
+    title: 'Atendimento, metas e indicadores no mesmo painel',
+    value: 'Único',
+    suffix: 'ambiente',
+    caption: 'A equipe acompanha a rotina da loja sem alternar entre telas e controles paralelos.',
+    tone: 'amber',
   },
   {
-    id: 2,
-    title: 'Inteligência Artificial na Leitura de Receitas',
-    subtitle: 'Automatize a interpretação de dados com IA, eliminando erros de digitação e acelerando o atendimento inicial',
-    color: '#00B4D8',
-    label: 'IA',
-    icon: 'box',
+    label: 'Visão gerencial',
+    title: 'Resumo rápido para decisões do dia',
+    value: 'Tempo',
+    suffix: 'real',
+    caption: 'Orçamentos, O.S., avisos, receitas vencidas e alertas aparecem em uma leitura direta.',
+    tone: 'teal',
   },
   {
-    id: 3,
-    title: 'Orçamentos Ágeis e Assertivos',
-    subtitle: 'Crie propostas personalizadas em segundos com acesso direto ao guia de lentes e configurações da sua loja.',
-    color: '#FBB040',
-    label: 'Orçamentos',
-    icon: 'users',
-  },
-  {
-    id: 4,
-    title: 'Gestão Estratégica de O.S',
-    subtitle: 'Mantenha o controle total do fluxo de trabalho com organização impecável e acompanhamento de status em tempo real.',
-    color: '#A6CE39',
-    label: 'Ordens de Serviço',
-    icon: 'layers',
-  },
-  {
-    id: 5,
-    title: 'Conexão Direta com Laboratórios',
-    subtitle: 'Otimize a logística enviando pedidos digitalmente para os principais laboratórios, sem necessidade de redigitação.',
-    color: '#FF6B6B',
-    label: 'Laboratórios',
-    icon: 'chart',
-  },
-  {
-    id: 6,
-    title: 'Precisão com Pupilômetro Integrado',
-    subtitle: 'Centralize medições técnicas diretamente no sistema, garantindo que todas as informações do cliente fiquem em um só lugar.',
-    color: '#FF9F43',
-    label: 'Pupilômetro',
-    icon: 'calendar',
+    label: 'Fluxo comercial',
+    title: 'Do primeiro atendimento ao pós-venda',
+    value: 'Ponta',
+    suffix: 'a ponta',
+    caption: 'O Optfácil conecta tarefas operacionais com indicadores que ajudam a loja a evoluir.',
+    tone: 'green',
   },
 ]
 
-const N = SLIDES.length
+const FEATURES = [
+  'Receitas, medidas e histórico do cliente no mesmo ambiente',
+  'Orçamentos conectados ao guia de lentes e regras da loja',
+  'Ordens de serviço com rastreabilidade do balcão ao laboratório',
+  'Integração preparada para reduzir retrabalho entre equipes',
+]
 
-/* ─────────────────────────────────────────────────────────
-   Stack positions
-───────────────────────────────────────────────────────── */
-const STACK = {
-  front:  { x: 0,  y: 0,  scale: 1,     opacity: 1,    zIndex: 10, rotateZ: 0 },
-  mid:    { x: 22, y: 18, scale: 0.953, opacity: 0.92,  zIndex: 5,  rotateZ: 0.5 },
-  back:   { x: 44, y: 36, scale: 0.905, opacity: 0.72,  zIndex: 1,  rotateZ: 1 },
-  hidden: { x: 0,  y: 0,  scale: 0.87,  opacity: 0,     zIndex: 0,  rotateZ: 0 },
-}
-
-function getRole(i, activeIdx) {
-  const dist = ((i - activeIdx) % N + N) % N
-  if (dist === 0) return 'front'
-  if (dist === 1) return 'mid'
-  if (dist === 2) return 'back'
-  return 'hidden'
-}
-
-/* ─────────────────────────────────────────────────────────
-   Icons
-───────────────────────────────────────────────────────── */
-function Icon({ name, color }) {
-  const p = { width: 18, height: 18, fill: 'none', viewBox: '0 0 18 18' }
-  if (name === 'grid') return (
-    <svg {...p}>
-      <rect x="2" y="2" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.6" />
-      <rect x="10" y="2" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.6" />
-      <rect x="2" y="10" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.6" />
-      <rect x="10" y="10" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.6" />
-    </svg>
-  )
-  if (name === 'box') return (
-    <svg {...p}>
-      <path d="M3 5.5L9 2l6 3.5v7L9 16 3 12.5V5.5z" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
-      <path d="M9 2v14M3 5.5l6 3.5 6-3.5" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
-    </svg>
-  )
-  if (name === 'users') return (
-    <svg {...p}>
-      <circle cx="7" cy="6" r="3" stroke={color} strokeWidth="1.6" />
-      <path d="M1 16c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
-      <path d="M12 3a3 3 0 010 6M14.5 11.5c1.5.8 2.5 2.2 2.5 4.5" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
-  )
-  if (name === 'layers') return (
-    <svg {...p}>
-      <path d="M9 2L16 6 9 10 2 6 9 2z" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
-      <path d="M2 10l7 4 7-4" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
-      <path d="M2 14l7 4 7-4" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
-  )
-  if (name === 'chart') return (
-    <svg {...p}>
-      <rect x="2" y="10" width="3.5" height="6" rx="1" stroke={color} strokeWidth="1.6" />
-      <rect x="7.25" y="6" width="3.5" height="10" rx="1" stroke={color} strokeWidth="1.6" />
-      <rect x="12.5" y="2" width="3.5" height="14" rx="1" stroke={color} strokeWidth="1.6" />
-    </svg>
-  )
-  if (name === 'calendar') return (
-    <svg {...p}>
-      <rect x="2" y="4" width="14" height="12" rx="2" stroke={color} strokeWidth="1.6" />
-      <path d="M6 2v4M12 2v4M2 8h14" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
-      <circle cx="6" cy="12" r="1.2" fill={color} />
-      <circle cx="9" cy="12" r="1.2" fill={color} />
-      <circle cx="12" cy="12" r="1.2" fill={color} />
-    </svg>
-  )
-  return null
-}
-
-/* ─────────────────────────────────────────────────────────
-   Dashboard Placeholder
-───────────────────────────────────────────────────────── */
-function ScreenPlaceholder({ slide }) {
+function ScreenshotPlaceholder() {
   return (
-    <div className="itg-ph" style={{ '--sc': slide.color }}>
-      <aside className="itg-ph__sidebar">
-        <div className="itg-ph__logo">
-          <div className="itg-ph__logo-icon" />
-          <div className="itg-ph__logo-text" />
+    <div className="itg-shot">
+      <div className="itg-shot__topbar">
+        <div className="itg-shot__dots" aria-hidden="true">
+          <span />
+          <span />
+          <span />
         </div>
-        <nav className="itg-ph__nav">
-          {[0, 1, 2, 3, 4].map(i => (
-            <div key={i} className={`itg-ph__nav-item${i === 0 ? ' itg-ph__nav-item--active' : ''}`}>
-              <div className="itg-ph__nav-icon" />
-              <div className="itg-ph__nav-label" />
-            </div>
-          ))}
-        </nav>
-        <div className="itg-ph__sidebar-footer">
-          <div className="itg-ph__avatar-sm" />
-          <div className="itg-ph__sidebar-user">
-            <div className="itg-ph__sidebar-name" />
-            <div className="itg-ph__sidebar-role" />
-          </div>
+        <div className="itg-shot__url">optfacil.dataweb.com.br/dashboard</div>
+        <div className="itg-shot__badge">Screenshot web</div>
+      </div>
+      <div className="itg-shot__empty">
+        <div className="itg-shot__icon">
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+            <rect x="4" y="7" width="26" height="18" rx="3" stroke="currentColor" strokeWidth="1.6" />
+            <path d="M12 28h10M15 25v3M19 25v3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            <path d="M9 12h8M9 16h14M9 20h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" opacity="0.45" />
+          </svg>
         </div>
-      </aside>
-
-      <main className="itg-ph__main">
-        <div className="itg-ph__topbar">
-          <div className="itg-ph__topbar-left">
-            <div className="itg-ph__topbar-title" />
-            <div className="itg-ph__breadcrumb" />
-          </div>
-          <div className="itg-ph__topbar-right">
-            <div className="itg-ph__search-bar" />
-            <div className="itg-ph__icon-btn itg-ph__icon-btn--bell" />
-            <div className="itg-ph__avatar" />
-          </div>
-        </div>
-
-        <div className="itg-ph__kpis">
-          {[
-            { w: '52%', accent: true },
-            { w: '64%', accent: false },
-            { w: '40%', accent: false },
-            { w: '58%', accent: false },
-          ].map((card, i) => (
-            <div key={i} className={`itg-ph__kpi${card.accent ? ' itg-ph__kpi--accent' : ''}`}>
-              <div className="itg-ph__kpi-top">
-                <div className="itg-ph__kpi-label" style={{ width: card.w }} />
-                <div className="itg-ph__kpi-badge" />
-              </div>
-              <div className="itg-ph__kpi-val" />
-              <div className="itg-ph__kpi-trend">
-                <div className="itg-ph__kpi-arrow" />
-                <div className="itg-ph__kpi-pct" />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="itg-ph__mid">
-          <div className="itg-ph__chart-card">
-            <div className="itg-ph__chart-header">
-              <div className="itg-ph__chart-title" />
-              <div className="itg-ph__chart-tabs">
-                <div className="itg-ph__tab itg-ph__tab--active" />
-                <div className="itg-ph__tab" />
-                <div className="itg-ph__tab" />
-              </div>
-            </div>
-            <div className="itg-ph__chart">
-              <div className="itg-ph__chart-grid">
-                {[0, 1, 2, 3].map(i => <div key={i} className="itg-ph__grid-line" />)}
-              </div>
-              <div className="itg-ph__bars">
-                {[38, 62, 47, 80, 55, 91, 69, 43, 75, 58, 84, 66].map((h, i) => (
-                  <div key={i} className="itg-ph__bar" style={{ height: `${h}%` }} />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="itg-ph__track-card">
-            <div className="itg-ph__track-header">
-              <div className="itg-ph__track-title" />
-              <div className="itg-ph__track-menu" />
-            </div>
-            <div className="itg-ph__list">
-              {[70, 45, 85, 55].map((w, i) => (
-                <div key={i} className="itg-ph__list-row">
-                  <div className="itg-ph__list-dot" />
-                  <div className="itg-ph__list-bar" style={{ width: `${w}%` }} />
-                  <div className="itg-ph__list-val" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </main>
+        <p>Ver com o fábio quais screenshots vamos colocar aqui</p>
+      </div>
     </div>
   )
 }
 
-/* ─────────────────────────────────────────────────────────
-   Main component
-───────────────────────────────────────────────────────── */
 export default function Integration() {
-  const [active, setActive] = useState(0)
+  const sectionRef = useRef(null)
+  const headerRef = useRef(null)
+  const visualRef = useRef(null)
+  const metricRefs = useRef([])
+  const featureRefs = useRef([])
 
-  const cardRefs      = useRef([])
-  const tabRefs       = useRef([])
-  const tabFillRefs   = useRef([])
-  const activeRef     = useRef(0)
-  const progressTween = useRef(null)
-  const fns           = useRef({ goTo: null, startProgress: null })
-  const sectionRef    = useRef(null)
-  const panelRef      = useRef(null)
-  const stackWrapRef  = useRef(null)
-  const headerRef     = useRef(null)
-
-  /* ── ScrollTrigger entry ── */
   useEffect(() => {
     const ctx = gsap.context(() => {
-
-      /* Header: número revela de baixo, título vem da direita por palavra */
-      if (headerRef.current) {
-        const tag     = headerRef.current.querySelector('.itg__htag')
-        const words   = headerRef.current.querySelectorAll('.itg__hword')
-        const em      = headerRef.current.querySelector('.itg__htitle-em')
-        const sub     = headerRef.current.querySelector('.itg__hsub')
-
-        gsap.set([tag, words, em, sub], { autoAlpha: 0 })
-
-        gsap.fromTo(tag,
-          { autoAlpha: 0, x: -16 },
-          {
-            autoAlpha: 1, x: 0, duration: 0.5, ease: 'power3.out',
-            scrollTrigger: { trigger: sectionRef.current, start: 'top 70%', once: true },
-          }
-        )
-        gsap.fromTo(words,
-          { autoAlpha: 0, x: 40 },
-          {
-            autoAlpha: 1, x: 0, duration: 0.6, stagger: 0.07, ease: 'power3.out',
-            clearProps: 'transform',
-            scrollTrigger: { trigger: sectionRef.current, start: 'top 68%', once: true },
-          }
-        )
-        gsap.fromTo(em,
-          { autoAlpha: 0, x: 50, skewX: 4 },
-          {
-            autoAlpha: 1, x: 0, skewX: 0, duration: 0.7, ease: 'power3.out',
-            clearProps: 'transform',
-            scrollTrigger: { trigger: sectionRef.current, start: 'top 68%', once: true },
-          }
-        )
-        gsap.fromTo(sub,
-          { autoAlpha: 0, y: 16 },
-          {
-            autoAlpha: 1, y: 0, duration: 0.55, ease: 'power3.out',
-            clearProps: 'transform',
-            scrollTrigger: { trigger: sectionRef.current, start: 'top 66%', once: true },
-          }
-        )
-      }
-
-      gsap.fromTo(tabRefs.current,
-        { x: -24, opacity: 0 },
-        {
-          x: 0, opacity: 1, duration: 0.55,
-          stagger: 0.07, ease: 'power2.out',
-          clearProps: 'transform',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 68%',
-            once: true,
-          },
-        }
-      )
-      gsap.fromTo(stackWrapRef.current,
-        { x: 40, opacity: 0 },
-        {
-          x: 0, opacity: 1, duration: 0.7,
-          ease: 'power3.out',
-          clearProps: 'transform,opacity',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 68%',
-            once: true,
-          },
-        }
-      )
-    })
-    return () => ctx.revert()
-  }, [])
-
-  /* ── Carousel ── */
-  useEffect(() => {
-    function startProgress() {
-      tabFillRefs.current.forEach((el, i) => {
-        if (!el) return
-        gsap.killTweensOf(el)
-        gsap.set(el, { scaleY: i === activeRef.current ? 0 : 0, transformOrigin: 'top center' })
-      })
-      const fill = tabFillRefs.current[activeRef.current]
-      if (!fill) return
-      progressTween.current?.kill()
-      progressTween.current = gsap.to(fill, {
-        scaleY: 1,
-        duration: 4.5,
-        ease: 'none',
-        onComplete: () => fns.current.goTo?.((activeRef.current + 1) % N, 1),
-      })
-    }
-
-    function goTo(newIdx, dir = 1) {
-      const oldIdx = activeRef.current
-      if (newIdx === oldIdx) return
-
-      // Mata tudo antes de começar — sem estado residual
-      progressTween.current?.kill()
-      gsap.killTweensOf(cardRefs.current)
-
-      // Posiciona cards ocultos no ponto de entrada correto
-      cardRefs.current.forEach((el, i) => {
-        if (!el) return
-        const oldRole = getRole(i, oldIdx)
-        const newRole = getRole(i, newIdx)
-        if (oldRole === 'hidden' && newRole !== 'hidden') {
-          gsap.set(el, dir > 0
-            ? { ...STACK.back, x: 66, y: 54, opacity: 0, zIndex: 0 }
-            : { ...STACK.back, x: -20, y: -20, opacity: 0, zIndex: 0 }
-          )
-        }
-      })
-
-      activeRef.current = newIdx
-      setActive(newIdx)
+      const words = headerRef.current?.querySelectorAll('.itg__word')
+      const lead = headerRef.current?.querySelector('.itg__lead')
+      const tag = headerRef.current?.querySelector('.itg__tag')
 
       const tl = gsap.timeline({
-        defaults: { duration: 0.45, ease: 'power3.out' },
-        onComplete() {
-          startProgress()
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 72%',
+          once: true,
         },
       })
 
-      cardRefs.current.forEach((el, i) => {
-        if (!el) return
-        const oldRole = getRole(i, oldIdx)
-        const newRole = getRole(i, newIdx)
+      tl.fromTo(tag,
+        { autoAlpha: 0, y: 12 },
+        { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power3.out' }
+      )
+        .fromTo(words,
+          { autoAlpha: 0, y: 42 },
+          { autoAlpha: 1, y: 0, duration: 0.68, stagger: 0.055, ease: 'power4.out', clearProps: 'transform' },
+          '-=0.18'
+        )
+        .fromTo(lead,
+          { autoAlpha: 0, y: 16 },
+          { autoAlpha: 1, y: 0, duration: 0.52, ease: 'power3.out', clearProps: 'transform' },
+          '-=0.32'
+        )
+        .fromTo(visualRef.current,
+          { autoAlpha: 0, y: 42 },
+          { autoAlpha: 1, y: 0, duration: 0.75, ease: 'power3.out', clearProps: 'transform' },
+          '-=0.18'
+        )
+        .fromTo(metricRefs.current,
+          { autoAlpha: 0, y: 28 },
+          { autoAlpha: 1, y: 0, duration: 0.58, stagger: 0.08, ease: 'power3.out', clearProps: 'transform' },
+          '-=0.45'
+        )
+        .fromTo(featureRefs.current,
+          { autoAlpha: 0, y: 18 },
+          { autoAlpha: 1, y: 0, duration: 0.45, stagger: 0.05, ease: 'power3.out', clearProps: 'transform' },
+          '-=0.35'
+        )
+    }, sectionRef)
 
-        if (dir > 0 && oldRole === 'front' && newRole === 'hidden') {
-          tl.to(el, { x: -160, y: -50, scale: 0.88, opacity: 0, rotateZ: -5, zIndex: 0 }, 0)
-          return
-        }
-
-        if (dir < 0 && oldRole === 'back' && newRole === 'hidden') {
-          tl.to(el, { x: 80, y: 60, scale: 0.82, opacity: 0, zIndex: 0 }, 0)
-          return
-        }
-
-        tl.to(el, { ...STACK[newRole] }, 0)
-      })
-    }
-
-    fns.current = { goTo, startProgress }
-
-    // Estado inicial limpo
-    cardRefs.current.forEach((el, i) => {
-      if (!el) return
-      gsap.set(el, STACK[getRole(i, 0)])
-    })
-
-    startProgress()
-
-    return () => {
-      progressTween.current?.kill()
-      gsap.killTweensOf(cardRefs.current)
-    }
+    return () => ctx.revert()
   }, [])
-
-  function handleTab(i) {
-    const dir = i > activeRef.current ? 1 : -1
-    fns.current.goTo?.(i, dir)
-  }
 
   return (
     <section className="section section--dark itg" id="plataforma" ref={sectionRef}>
-
-      <div className="itg__blobs" aria-hidden="true">
-        <div className="itg__blob itg__blob--1" />
-        <div className="itg__blob itg__blob--2" />
-        <div className="itg__blob itg__blob--3" />
+      <div className="itg__bg" aria-hidden="true">
+        <span className="itg__wash itg__wash--a" />
+        <span className="itg__wash itg__wash--b" />
+        <span className="itg__grid" />
       </div>
 
-      <div className="itg__grid-overlay" aria-hidden="true" />
-
       <div className="container">
-        {/* ── Header ── */}
-        <div className="itg__header" ref={headerRef}>
-          <div className="itg__header-content">
-            <span className="section__tag itg__htag">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <rect x="1" y="2" width="10" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
-                <path d="M4 9v2M8 9v2M3 11h6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-              </svg>
-              Plataforma Web
-            </span>
-            <h2 className="itg__htitle">
-              <span className="itg__hword">Conheça</span>{' '}
-              <span className="itg__hword">o</span>
-              <br/>
-              <em className="itg__htitle-em">Optfácil</em>
-            </h2>
-            <p className="itg__hsub">
-              A solução definitiva para a gestão avançada de ordens de serviço em óticas
-            </p>
-          </div>
-        </div>
+        <header className="itg__header" ref={headerRef}>
+          <span className="section__tag itg__tag">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <rect x="1" y="2" width="10" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
+              <path d="M4 9v2M8 9v2M3 11h6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+            </svg>
+            Plataforma web
+          </span>
 
-        <div className="itg__body">
-
-          {/* ── Left: feature tabs ── */}
-          <div className="itg__panel" ref={panelRef}>
-            {SLIDES.map((s, i) => (
-              <button
-                key={s.id}
-                className={`itg__tab${i === active ? ' is-active' : ''}`}
-                style={{ '--tc': s.color }}
-                onClick={() => handleTab(i)}
-                ref={el => (tabRefs.current[i] = el)}
-              >
-                {/* Horizontal bottom progress bar */}
-                <div
-                  className="itg__tab-fill"
-                  ref={el => (tabFillRefs.current[i] = el)}
-                />
-
-                {/* Index number */}
-                <div className="itg__tab-icon">
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                    {i === active
-                      ? <Icon name={s.icon} color={s.color} />
-                      : <text
-                          x="9" y="13"
-                          textAnchor="middle"
-                          fontSize="11"
-                          fontWeight="700"
-                          fill="rgba(255,255,255,0.22)"
-                          fontFamily="inherit"
-                        >
-                          {String(i + 1).padStart(2, '0')}
-                        </text>
-                    }
-                  </svg>
-                </div>
-
-                {/* Body: label chip + title (row 1) + desc (row 2) */}
-                <div className="itg__tab-body">
-                  <span className="itg__tab-label">{s.label}</span>
-                  <p className="itg__tab-title">{s.title}</p>
-                </div>
-                <p className="itg__tab-desc">{s.subtitle}</p>
-              </button>
+          <h2 className="itg__title">
+            {['A', 'operação', 'da', 'ótica,'].map((word) => (
+              <span className="itg__word-wrap" key={word}>
+                <span className="itg__word">{word}&nbsp;</span>
+              </span>
             ))}
+            <br />
+            {['organizada', 'em', 'um', 'só', 'fluxo.'].map((word) => (
+              <span className="itg__word-wrap" key={word}>
+                <span className="itg__word">{word}&nbsp;</span>
+              </span>
+            ))}
+          </h2>
+
+          <p className="itg__lead">
+            O Optfácil conecta atendimento, orçamento, medições e ordens de serviço em uma rotina web
+            mais clara para loja, laboratório e gestão.
+          </p>
+        </header>
+
+        <div className="itg__layout">
+          <div className="itg__visual" ref={visualRef}>
+            <ScreenshotPlaceholder />
           </div>
 
-          {/* ── Right: card stack ── */}
-          <div className="itg__stack-wrap" ref={stackWrapRef}>
-            <div className="itg__stack">
-              <div className="itg__spacer" aria-hidden="true">
-                <div className="itg__chrome" />
-                <div className="itg__screen" />
-              </div>
+          <aside className="itg__metrics" aria-label="Destaques do Optfácil">
+            <div className="itg__metrics-head">
+              <span>Leitura do painel</span>
+              <p>O que esse dashboard evidencia na rotina da ótica.</p>
+            </div>
 
-              {SLIDES.map((s, i) => (
-                <div
-                  key={s.id}
-                  className="itg__card"
-                  ref={el => (cardRefs.current[i] = el)}
-                  style={{ '--cc': s.color }}
+            <div className="itg__metric-list">
+              {METRICS.map((metric, index) => (
+                <article
+                  className={`itg__metric itg__metric--${metric.tone}`}
+                  key={metric.label}
+                  ref={el => (metricRefs.current[index] = el)}
                 >
-                  <div className="itg__chrome">
-                    <div className="itg__chrome-dots">
-                      <span className="itg__dot--red" />
-                      <span className="itg__dot--yellow" />
-                      <span className="itg__dot--green" />
-                    </div>
-                    <div className="itg__chrome-bar">
-                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                        <circle cx="5" cy="5" r="4" stroke="currentColor" strokeWidth="1" opacity="0.4" />
-                        <path d="M1 5h8M5 1c-1 1.5-1.5 2.8-1.5 4s.5 2.5 1.5 4"
-                          stroke="currentColor" strokeWidth="1" opacity="0.4" strokeLinecap="round" />
-                      </svg>
-                      dataweb.com.br/{s.label.toLowerCase()}
-                    </div>
-                    <div className="itg__chrome-actions">
-                      <span /><span /><span />
-                    </div>
+                  <div className="itg__metric-head">
+                    <span className="itg__metric-mark" aria-hidden="true" />
+                    <span className="itg__metric-label">{metric.label}</span>
                   </div>
-                  <div className="itg__screen">
-                    <ScreenPlaceholder slide={s} />
+                  <div className="itg__metric-body">
+                    <h3>{metric.title}</h3>
+                    <p>{metric.caption}</p>
                   </div>
-                </div>
+                  <div className="itg__metric-proof">
+                    <strong>{metric.value}</strong>
+                    <span>{metric.suffix}</span>
+                  </div>
+                </article>
               ))}
             </div>
-          </div>
+          </aside>
+        </div>
 
+        <div className="itg__feature-grid">
+          {FEATURES.map((feature, index) => (
+            <div
+              className="itg__feature"
+              key={feature}
+              ref={el => (featureRefs.current[index] = el)}
+            >
+              <span className="itg__feature-index">{String(index + 1).padStart(2, '0')}</span>
+              <p>{feature}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

@@ -15,7 +15,7 @@ const FEATURES = [
       </svg>
     ),
     title: 'Mensagens via WhatsApp',
-    desc: 'Dispare mensagens automáticas diretamente pelo sistema — sem app externo, sem cópia manual.',
+    desc: 'Acione clientes pelo canal certo, com histórico preservado e mensagens registradas na operação.',
     color: '#00A0B1',
     stat: '3×',
     statLabel: 'mais retorno',
@@ -31,7 +31,7 @@ const FEATURES = [
       </svg>
     ),
     title: 'Aniversariantes do dia',
-    desc: 'O sistema identifica e aciona automaticamente clientes no dia do aniversário com mensagem personalizada.',
+    desc: 'Transforme datas importantes em contato recorrente, com listas diárias e abordagem personalizada.',
     color: '#FBB040',
     stat: '+89%',
     statLabel: 'satisfação',
@@ -46,7 +46,7 @@ const FEATURES = [
       </svg>
     ),
     title: 'Controle de inadimplência',
-    desc: 'Visualize rapidamente quem está em atraso e acione réguas de cobrança com um clique.',
+    desc: 'Organize cobranças por prioridade, prazo e status para reduzir perdas sem perder relacionamento.',
     color: '#F8473A',
     stat: '−70%',
     statLabel: 'inadimplência',
@@ -62,7 +62,7 @@ const FEATURES = [
       </svg>
     ),
     title: 'Campanhas inteligentes',
-    desc: 'Segmente sua base e reative clientes inativos com campanhas automáticas de reengajamento.',
+    desc: 'Crie segmentos por comportamento de compra e reative clientes com cadências comerciais claras.',
     color: '#A6CE39',
     stat: '+120%',
     statLabel: 'reativação',
@@ -267,7 +267,7 @@ export default function CRM() {
   const active = FEATURES[activeFeature]
 
   /* título partido em spans para animação por palavra */
-  const titleWords = ['Cada', 'cliente,', 'no', 'momento', 'certo.']
+  const titleWords = ['Relacionamento', 'com', 'cadência', 'comercial.']
 
   return (
     <section className="crm" id="crm" ref={sectionRef}>
@@ -299,7 +299,7 @@ export default function CRM() {
           </span>
 
           <p className="crm__eyebrow" ref={eyebrowRef}>
-            Automação de relacionamento
+            CRM para óticas em operação
           </p>
 
           <h2 className="crm__title">
@@ -318,8 +318,8 @@ export default function CRM() {
 
           <div className="crm__htitle-row">
             <p className="crm__sub" ref={subRef}>
-              O CRM Dataweb é uma plataforma&nbsp;<strong>100% web</strong> que automatiza o relacionamento
-              da sua ótica — do aniversário do cliente à régua de cobrança — sem nenhum esforço manual.
+              O CRM Dataweb organiza contatos, campanhas e cobranças em uma rotina comercial contínua.
+              Sua equipe enxerga prioridades, histórico e próximos passos sem depender de planilhas ou controles paralelos.
             </p>
 
             <div className="crm__hstats">
@@ -443,6 +443,7 @@ export default function CRM() {
             {FEATURES.map((f, i) => (
               <button
                 key={f.id}
+                type="button"
                 ref={el => (featureRefs.current[i] = el)}
                 className={`crm__feature${activeFeature === i ? ' is-active' : ''}`}
                 style={{ '--fc': f.color }}
@@ -478,10 +479,10 @@ export default function CRM() {
               <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" stroke="currentColor" strokeWidth="1.6"/>
             </svg>
             <div className="crm__impact-text">
-              <p className="crm__impact-quote">Relacionamento gera vendas.</p>
+              <p className="crm__impact-quote">Contato certo, histórico completo, próxima ação clara.</p>
               <p className="crm__impact-sub">
-                Com o CRM Dataweb, sua ótica mantém contato com os clientes no momento certo —
-                e transforma cada interação em uma oportunidade real.
+                A rotina comercial deixa de depender da memória da equipe e passa a operar com listas, status
+                e automações visíveis para todos.
               </p>
             </div>
           </div>
