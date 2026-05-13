@@ -14,7 +14,8 @@
       "Bash(ffprobe /Users/Victor/Documents/Projects/dataweb-site/public/assets/rocket04.mov)",
       "Read(//usr/local/bin/**)",
       "Read(//opt/homebrew/**)",
-      "Bash(npx vite *)"
+      "Bash(npx vite *)",
+      "Bash(npm run *)"
     ]
   }
 }

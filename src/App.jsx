@@ -7,6 +7,7 @@ import Integration from './components/Integration'
 import Products from './components/Products'
 import CRM from './components/CRM'
 import Analytics from './components/Analytics'
+import SmartScanner from './components/SmartScanner'
 import Franchise from './components/Franchise'
 import Footer from './components/Footer'
 import ContactBar from './components/ContactBar'
@@ -33,6 +34,7 @@ export default function App() {
           <Products />
           <CRM />
           <Analytics />
+          <SmartScanner />
           <Franchise />
         </main>
         <Footer />

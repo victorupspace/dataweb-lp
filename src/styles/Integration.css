@@ -154,7 +154,7 @@
   overflow: hidden;
 }
 
-/* Screenshot placeholder. Replace .itg-shot__empty content with real product screenshots later. */
+/* Product screenshot */
 .itg-shot {
   width: 100%;
   aspect-ratio: 16 / 8.8;
@@ -227,39 +227,20 @@
   text-transform: uppercase;
 }
 
-.itg-shot__empty {
+.itg-shot__viewport {
   flex: 1;
   min-height: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: clamp(28px, 4vw, 56px);
-  color: rgba(232,242,245,0.3);
-  background:
-    linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
-  background-size: 38px 38px;
+  position: relative;
+  overflow: hidden;
+  background: #f5f5f5;
 }
 
-.itg-shot__icon {
-  display: grid;
-  place-items: center;
-  width: 72px;
-  height: 72px;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-.itg-shot__empty p {
-  margin: 0;
-  color: rgba(232,242,245,0.42);
-  font-size: 0.92rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  text-align: center;
+.itg-shot__viewport img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: left top;
 }
 
 /* Metric cards */
@@ -565,15 +546,8 @@
     display: none;
   }
 
-  .itg-shot__empty {
-    padding: 28px 18px;
-    background-size: 28px 28px;
-  }
-
-  .itg-shot__icon {
-    width: 62px;
-    height: 62px;
-    border-radius: 16px;
+  .itg-shot__viewport img {
+    object-position: 11% top;
   }
 
   .itg__metric,

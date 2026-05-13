@@ -1355,7 +1355,7 @@ ul, ol {
 
 .acs__deck {
   position: relative;
-  height: 540px;
+  height: 570px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -1364,47 +1364,58 @@ ul, ol {
 
 .acs__phone {
   position: absolute;
-  width: 252px;
+  width: 268px;
   will-change: transform, opacity;
 }
 
 .acs__shell {
   background: #ffffff;
-  border-radius: 38px;
-  border: 1.5px solid rgba(0, 0, 0, 0.09);
+  border-radius: 36px;
+  border: 1px solid rgba(0, 0, 0, 0.09);
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.04),
     0 8px 20px rgba(0, 0, 0, 0.07),
     0 28px 64px rgba(0, 0, 0, 0.11),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
   overflow: hidden;
-  aspect-ratio: 9 / 19.5;
+  aspect-ratio: 9 / 18.7;
   display: flex;
   flex-direction: column;
-  padding: 10px 10px 14px;
+  padding: 9px;
   gap: 0;
-}
-
-.acs__notch {
-  width: 72px;
-  height: 20px;
-  background: rgba(0, 0, 0, 0.06);
-  border-radius: 0 0 14px 14px;
-  margin: 0 auto 6px;
-  flex-shrink: 0;
 }
 
 .acs__screen {
   flex: 1;
+  position: relative;
   overflow: hidden;
-  border-radius: 0 0 28px 28px;
+  border-radius: 28px;
   background: #f8f8fa;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+  isolation: isolate;
+}
+
+.acs__screenshot {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #f2f2f2;
+}
+
+.acs__screenshot img {
+  position: absolute;
+  top: -2.25%;
+  left: -7.65%;
+  width: 157.25%;
+  max-width: none;
+  height: auto;
+  display: block;
 }
 
 /* Progress bar */
 .acs__progress-track {
   width: 100%;
-  max-width: 252px;
+  max-width: 268px;
   height: 2px;
   background: rgba(0, 0, 0, 0.08);
   border-radius: 1px;
@@ -1569,42 +1580,6 @@ ul, ol {
   background: #fcc55e;
   box-shadow: 0 8px 28px rgba(251, 176, 64, 0.32);
   transform: translateY(-2px);
-}
-
-/* ── Phone screen placeholder ── */
-.acs__placeholder {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 20px;
-  color: rgba(0, 0, 0, 0.25);
-  position: relative;
-}
-
-.acs__placeholder-icon {
-  opacity: 0.6;
-}
-
-.acs__placeholder-text {
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 1.5;
-  text-align: center;
-  color: rgba(0, 0, 0, 0.3);
-}
-
-.acs__placeholder-num {
-  position: absolute;
-  bottom: 14px;
-  right: 16px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--accent, rgba(0, 0, 0, 0.18));
-  opacity: 0.7;
 }
 
 /* ============================================================
@@ -2019,11 +1994,11 @@ ul, ol {
 
   .acs__visual { order: -1; }
 
-  .acs__deck { height: 480px; }
+  .acs__deck { height: 500px; }
 
-  .acs__phone { width: 218px; }
+  .acs__phone { width: 232px; }
 
-  .acs__progress-track { max-width: 218px; }
+  .acs__progress-track { max-width: 232px; }
 
   .acs__info {
     padding: 40px 36px 36px;
@@ -2069,15 +2044,15 @@ ul, ol {
   }
 
   .acs__deck {
-    height: 380px;
+    height: 410px;
   }
 
   .acs__phone {
-    width: 170px;
+    width: 178px;
   }
 
   .acs__progress-track {
-    max-width: 170px;
+    max-width: 178px;
   }
 
   .acs__info {

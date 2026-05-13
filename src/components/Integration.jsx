@@ -39,7 +39,9 @@ const FEATURES = [
   'Integração preparada para reduzir retrabalho entre equipes',
 ]
 
-function ScreenshotPlaceholder() {
+const OPTFACIL_SCREENSHOT = '/assets/optfacil%20images/Screenshot%202026-05-13%20at%2009.23.11.png'
+
+function OptfacilScreenshot() {
   return (
     <div className="itg-shot">
       <div className="itg-shot__topbar">
@@ -49,17 +51,15 @@ function ScreenshotPlaceholder() {
           <span />
         </div>
         <div className="itg-shot__url">optfacil.dataweb.com.br/dashboard</div>
-        <div className="itg-shot__badge">Screenshot web</div>
+        <div className="itg-shot__badge">Dashboard</div>
       </div>
-      <div className="itg-shot__empty">
-        <div className="itg-shot__icon">
-          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
-            <rect x="4" y="7" width="26" height="18" rx="3" stroke="currentColor" strokeWidth="1.6" />
-            <path d="M12 28h10M15 25v3M19 25v3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-            <path d="M9 12h8M9 16h14M9 20h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" opacity="0.45" />
-          </svg>
-        </div>
-        <p>Ver com o fábio quais screenshots vamos colocar aqui</p>
+      <div className="itg-shot__viewport">
+        <img
+          src={OPTFACIL_SCREENSHOT}
+          alt="Dashboard do Optfácil com indicadores, atalhos operacionais e informações gerais da loja"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
     </div>
   )
@@ -160,7 +160,7 @@ export default function Integration() {
 
         <div className="itg__layout">
           <div className="itg__visual" ref={visualRef}>
-            <ScreenshotPlaceholder />
+            <OptfacilScreenshot />
           </div>
 
           <aside className="itg__metrics" aria-label="Destaques do Optfácil">
